@@ -1,36 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // https://nuxt.com/modules
+  compatibilityDate: '2025-07-15',
+  devtools: { enabled: true },
+
   modules: [
-    '@nuxthub/core',
     '@nuxt/eslint',
-    '@nuxt/content',
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
+    '@nuxt/scripts',
     '@nuxt/test-utils',
-    'shadcn-nuxt'
+    'shadcn-nuxt',
+    '@nuxthub/core',
+    '@sidebase/nuxt-auth'
   ],
-
-  // https://devtools.nuxt.com
-  devtools: { enabled: true },
-
-  // Env variables - https://nuxt.com/docs/getting-started/configuration#environment-variables-and-private-tokens
-  runtimeConfig: {
-    public: {
-      // Can be overridden by NUXT_PUBLIC_HELLO_TEXT environment variable
-      helloText: 'Hello from the Edge 👋'
-    }
-  },
-  // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
-  future: { compatibilityVersion: 4 },
-  compatibilityDate: '2025-03-01',
-
-  // https://hub.nuxt.com/docs/getting-started/installation#options
-  hub: {},
-
-  //shadcn-nuxt
-  shadcn: {
+shadcn: {
     /**
      * Prefix for all the imported component
      */
@@ -41,14 +25,8 @@ export default defineNuxtConfig({
      */
     componentDir: './components/ui'
   },
-
-  // Development config
-  eslint: {
-    config: {
-      stylistic: {
-        quotes: 'single',
-        commaDangle: 'never'
-      }
-    }
+  hub: {
+    blob: true,
+    database: true
   }
 })
