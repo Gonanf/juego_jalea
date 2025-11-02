@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-
+  css: ["./app/assets/css/tailwind.css"],
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -12,7 +12,9 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     '@nuxthub/core',
-    '@sidebase/nuxt-auth'
+    '@sidebase/nuxt-auth',
+    '@nuxtjs/tailwindcss',
+    'nitro-cloudflare-dev'
   ],
 shadcn: {
     /**
@@ -28,5 +30,21 @@ shadcn: {
   hub: {
     blob: true,
     database: true
-  }
+  },
+auth: {
+    provider: {
+      type: 'authjs',
+      trustHost: false,
+      addDefaultCallbackUrl: true
+    }
+  },
+   icon: {
+    customCollections: [
+      {
+        prefix: 'jj',
+        dir: './app/assets/jj',
+        recursive: true
+      },
+    ],
+  },
 })

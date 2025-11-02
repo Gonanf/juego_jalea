@@ -1,48 +1,51 @@
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig()
-const colors = ['#f87171', '#fb923c', '#fbbf24', '#facc15', '#a3e635', '#4ade80', '#34d399', '#2dd4bf', '#22d3ee', '#38bdf8', '#60a5fa', '#818cf8', '#a78bfa', '#c084fc', '#e879f9', '#f472b6', '#fb7185']
-const color = useState('color', () => colors[Math.floor(Math.random() * colors.length)])
+import { Separator } from '~/components/ui/separator'
+const fecha_final = new Date("2025-11-07T00:00:00Z")
+const diff = ref(fecha_final - new Date());
+const ahora = diff.value < 0
+console.log(diff.value)
+
+const hours = ref(diff.value / 3.6e6 | 0)
+const mins = ref(diff.value % 3.6e6 / 6e4 | 0)
+const secs = ref(Math.round(diff.value % 6e4 / 1e3))
+setInterval(() => {
+  diff.value = fecha_final - new Date();
+  hours.value = diff.value / 3.6e6 | 0
+  mins.value = diff.value % 3.6e6 / 6e4 | 0
+  secs.value = Math.round(diff.value % 6e4 / 1e3)
+}, 1000)
 </script>
 
 <template>
-  <div class="centered">
-    <h1 :style="{ color }">
-      {{ runtimeConfig.public.helloText }}
-    </h1>
-    <NuxtLink
-      to="/"
-      external
-    >
-      refresh
-    </NuxtLink>
+  <div class="h-full w-full bg-[url(/pexels-chokniti-khongchum-1197604-2679968.jpg)] flex items-center justify-center">
+    <div class="w-full flex flex-col items-center gap-5">
+      <NuxtLink to="/">
+        <NuxtImg src="/logo.svg" class="w-[2rem] h-[2rem]" placeholder />
+      </NuxtLink>
+      <p class="text-5xl text-white">PRONTO</p>
+      <p class="text-white">¡Participa de la competencia de creacion de videojuegos y unete a la plataforma!</p>
+    </div>
+    <Separator class="mx-4" orientation="vertical"></Separator>
+    <div class="w-full flex flex-col items-center gap-5">
+      <p class="text-white">El sitio web estara disponible en:</p>
+      <div class="gap-5 grid grid-cols-4">
+        <TimerC :time="Math.round(hours/24)">
+          Dias
+        </TimerC>
+
+        <TimerC :time="hours%24">
+          Horas
+        </TimerC>
+
+        <TimerC :time="mins">
+          Minutos
+        </TimerC>
+
+        <TimerC :time="secs">
+          Segundos
+        </TimerC>
+
+      </div>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.centered {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-h1 {
-  font-size: 32px;
-}
-@media (min-width: 768px) {
-  h1 {
-    font-size: 64px;
-  }
-}
-a {
-  color: #888;
-  text-decoration: none;
-  font-size: 18px;
-}
-a:hover {
-  text-decoration: underline;
-}
-</style>
