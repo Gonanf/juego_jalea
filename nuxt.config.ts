@@ -50,4 +50,15 @@ auth: {
       },
     ],
   },
+   app: {
+    head: {
+      title: 'JuegoJalea', // default fallback title
+      htmlAttrs: {
+        lang: 'es',
+      },
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+    },
+  },
 })
