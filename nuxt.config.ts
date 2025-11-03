@@ -32,12 +32,15 @@ shadcn: {
     database: true
   },
 auth: {
+  isEnabled: false,
     provider: {
       type: 'authjs',
       trustHost: false,
       addDefaultCallbackUrl: true
-    }
+    },
+    baseURL: 'http://localhost:3000/api/auth',
   },
+  
    icon: {
     customCollections: [
       {

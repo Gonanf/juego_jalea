@@ -17,15 +17,16 @@ setInterval(() => {
 </script>
 
 <template>
-  <div class="h-full w-full bg-[url(/pexels-chokniti-khongchum-1197604-2679968.jpg)] flex items-center justify-center">
+  
+  <div class="h-full w-full bg-[url(/pexels-chokniti-khongchum-1197604-2679968.jpg)] flex items-center justify-center max-lg:flex-col">
     <div class="w-full flex flex-col items-center gap-5">
       <NuxtLink to="/">
         <NuxtImg src="/logo.svg" class="w-[2rem] h-[2rem]" placeholder />
       </NuxtLink>
       <p class="text-5xl text-white">PRONTO</p>
-      <p class="text-white">¡Participa de la competencia de creacion de videojuegos y unete a la plataforma!</p>
+      <p class="text-white text-center">¡Participa de la competencia de creacion de videojuegos y unete a la plataforma!</p>
     </div>
-    <Separator class="mx-4" orientation="vertical"></Separator>
+    <Separator class="mx-4 max-lg:hidden" orientation="vertical"></Separator>
     <div class="w-full flex flex-col items-center gap-5">
       <p class="text-white">El sitio web estara disponible en:</p>
       <div class="gap-5 grid grid-cols-4">
@@ -46,6 +47,8 @@ setInterval(() => {
         </TimerC>
 
       </div>
+      <p class="text-white">Del 7 al 16 de noviembre</p>
     </div>
+    
   </div>
 </template>

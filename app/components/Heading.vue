@@ -9,8 +9,8 @@ import {Button} from "./ui/button";
       <NuxtImg src="/logo.svg" class="w-[2rem] h-[2rem]" placeholder  />
     </NuxtLink>
         <div class="flex gap-5">
-            <Button asChild variant="ghost">
-                <NuxtLink :to="{name: 'store'}">
+            <Button asChild variant="ghost" disabled>
+                <NuxtLink :to="{name: 'index'}">
                     Tienda
                 </NuxtLink>
             </Button>
@@ -19,8 +19,8 @@ import {Button} from "./ui/button";
                     Acerca
                 </NuxtLink>
             </Button>
-            <Button asChild variant="ghost">
-                <NuxtLink to="/api/auth">
+            <Button asChild variant="ghost" disabled>
+                <NuxtLink to="/">
                     Iniciar Sesion
                 </NuxtLink>
             </Button>

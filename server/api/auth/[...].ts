@@ -1,4 +1,4 @@
-import GithubProvider from 'next-auth/providers/github'
+/* import GithubProvider from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { NuxtAuthHandler } from '#auth'
@@ -9,4 +9,4 @@ export default NuxtAuthHandler({
   providers: [
     GithubProvider
   ]
-})
+}) */
