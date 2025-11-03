@@ -23,13 +23,13 @@ setInterval(() => {
       <NuxtLink to="/">
         <NuxtImg src="/logo.svg" class="w-[2rem] h-[2rem]" placeholder />
       </NuxtLink>
-      <p class="text-5xl text-white">PRONTO</p>
+      <p class="text-5xl text-amber-800 duration-500 font-serif animate-pulse">PRONTO</p>
       <p class="text-white text-center">¡Participa de la competencia de creacion de videojuegos y unete a la plataforma!</p>
     </div>
     <Separator class="mx-4 max-lg:hidden" orientation="vertical"></Separator>
     <div class="w-full flex flex-col items-center gap-5">
       <p class="text-white">El sitio web estara disponible en:</p>
-      <div class="gap-5 grid grid-cols-4">
+      <div class="gap-5 grid grid-cols-4 w-full">
         <TimerC :time="Math.round(hours/24)">
           Dias
         </TimerC>
