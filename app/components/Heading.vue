@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {Button} from "./ui/button";
 const auth = useAuth();
-console.log(auth.status)
 
-
+console.log(auth.data.value);
 </script>
 
 <template>
@@ -22,7 +21,11 @@ console.log(auth.status)
                     Acerca
                 </NuxtLink>
             </Button>
-            <Button variant="ghost" @click="auth.signIn('auth0')">
+
+            <Button variant="ghost" @click="auth.signOut" v-if="auth.data.value != undefined || auth.data.value != null">
+              {{auth.data.value?.user?.name}}
+            </Button>
+            <Button variant="ghost" @click="auth.signIn('auth0')" v-else >
               Iniciar Sesion
             </Button>
         </div>

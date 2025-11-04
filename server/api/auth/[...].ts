@@ -10,13 +10,9 @@ export default NuxtAuthHandler({
   secret: 'test-123',
   providers: [
     Auth0Provider.default({
-      clientId: useRuntimeConfig().auth0Id,
-      clientSecret: useRuntimeConfig().auth0Secret,
-      issuer: useRuntimeConfig().auth0Issuer
-    }),
-    GoogleProvider.default({
-      clientId: useRuntimeConfig().googleClientId,
-      clientSecret: useRuntimeConfig().googleClientSecret
+      clientId: process.env.AUTH0_ID,
+      clientSecret: process.env.AUTH0_SECRET,
+      issuer: process.env.AUTH0_ISSUER!
     })
   ],
 })
