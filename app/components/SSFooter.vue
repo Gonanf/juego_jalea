@@ -68,7 +68,6 @@
 <script lang="ts" setup>
 import { ChartArea, ChartBar, Gamepad, House, LogOut, Settings } from 'lucide-vue-next';
 import { useSidebar } from './ui/sidebar';
-
 const auth = useAuth();
 
 const sidebar = useSidebar();

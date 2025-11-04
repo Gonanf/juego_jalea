@@ -58,25 +58,32 @@ const sidebar_items = {
       titulo: "Documentacion",
       items: [
         {
-          titulo: "¿Que es Juego Jalea?"
+          titulo: "¿Que es Juego Jalea?",
+          url: {name: 'about-introduccion'}
         },
         {
-          titulo: "Como participar"
+          titulo: "Como participar",
+          url: {name: 'about-participar'}
         },
         {
-          titulo: "Requisitos"
+          titulo: "Requisitos",
+          url: {name: 'about-introduccion'}
         },
         {
-          titulo: "Sobre la tienda"
+          titulo: "Sobre la tienda",
+          url: {name: 'about-tienda'}
         },
         {
-          titulo: "Como publicar un juego"
+          titulo: "Como publicar un juego",
+          url: {name: 'about-publicaciones'}
         },
         {
-          titulo: "Codigo fuente"
+          titulo: "Codigo fuente",
+          url: {name: 'about-source'}
         },
         {
-          titulo: "Contactos/Acerca"
+          titulo: "Contactos",
+          url: {name: 'about-contacto'}
         },
       ]
     },
