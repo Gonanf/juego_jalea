@@ -5,12 +5,13 @@ import {
   SidebarInset
 } from '@/components/ui/sidebar';
 import {
-  Folder,
-  Forward,
   Gamepad2,
-  MoreHorizontal,
-  Trash2,
+  Store,
+  BookOpen
 } from "lucide-vue-next"
+const auth = useAuth();
+
+console.log(auth.data.value);
 const sidebar_items = {
   content: [
     {
@@ -31,36 +32,56 @@ const sidebar_items = {
         },
       ]
     },
-  ]
+    {
+      icon: Store,
+      titulo: "Tienda",
+      items: [
+        {
+          titulo: "Populares"
+        },
+        {
+          titulo: "Novedades"
+        },
+        {
+          titulo: "Mas vendidos"
+        },
+        {
+          titulo: "Mas gustados"
+        },
+        {
+          titulo: "Ganadores de Juegos Jaleas"
+        },
+      ]
+    },
+    {
+      icon: BookOpen,
+      titulo: "Documentacion",
+      items: [
+        {
+          titulo: "¿Que es Juego Jalea?"
+        },
+        {
+          titulo: "Como participar"
+        },
+        {
+          titulo: "Requisitos"
+        },
+        {
+          titulo: "Sobre la tienda"
+        },
+        {
+          titulo: "Como publicar un juego"
+        },
+        {
+          titulo: "Codigo fuente"
+        },
+        {
+          titulo: "Contactos/Acerca"
+        },
+      ]
+    },
+  ],
 }
-
-const items = [
-  {
-    title: "¿Que es Juego Jalea?",
-    url: "#introduccion",
-    icon: "lucide:circle-question-mark",
-    value: 0
-  },
-  {
-    title: "Sobre la tienda",
-    url: "#tienda",
-    icon: "lucide:store",
-    value: 1
-  },
-  {
-    title: "Requisitos",
-    url: "#requisitos",
-    icon: "lucide:infinity",
-    value: 2
-  },
-  {
-    title: "Contactos",
-    url: "#contactos",
-    icon: "lucide:circle-user",
-    value: 3
-  },
-
-];
 
 </script>
 

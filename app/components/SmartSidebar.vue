@@ -1,20 +1,22 @@
 <template>
-  <Sidebar collapsible="icon">
-    <SidebarHeader>
+  <Sidebar collapsible="icon" @click="!sidebar.open.value && sidebar.toggleSidebar()" >
+    <SidebarHeader class="bg-amber-100">
 
       <SSHeader/>
 
     </SidebarHeader>
+      <UiSeparator></UiSeparator>
 
-    <SidebarContent>
+    <SidebarContent class="bg-amber-100">
       
       <SSContent :items="props.items.content"/>
 
     </SidebarContent>
+      <UiSeparator></UiSeparator>
 
-    <SidebarFooter>
+    <SidebarFooter class="bg-amber-100">
 
-      <SSFooter :item="props.items.user"/>
+      <SSFooter/>
 
     </SidebarFooter>
 
@@ -23,8 +25,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarRail } from './ui/sidebar';
-
-
+import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, SidebarRail, useSidebar } from './ui/sidebar';
 const props = defineProps(['items']);
+//TODO: Change this into using the primary (modified) color instead of hardcoding it
+
+
+const sidebar = useSidebar()
 </script>
