@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {Button} from "./ui/button";
+import { SidebarTrigger } from "./ui/sidebar";
 const auth = useAuth();
 
 console.log(auth.data.value);
@@ -7,6 +8,9 @@ console.log(auth.data.value);
 
 <template>
     <header class="w-full p-5 flex justify-between shadow-md items-center bg-amber-100" >
+              <main>
+      <SidebarTrigger/>
+    </main>
     <NuxtLink to="/">
       <NuxtImg src="/logo.svg" class="w-[2rem] h-[2rem]" placeholder  />
     </NuxtLink>
