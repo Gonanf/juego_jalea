@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import {Button} from "./ui/button";
+const auth = useAuth();
+console.log(auth.status)
+
 
 </script>
 
@@ -19,10 +22,8 @@ import {Button} from "./ui/button";
                     Acerca
                 </NuxtLink>
             </Button>
-            <Button asChild variant="ghost" disabled>
-                <NuxtLink to="/">
-                    Iniciar Sesion
-                </NuxtLink>
+            <Button variant="ghost" @click="auth.signIn('auth0')">
+              Iniciar Sesion
             </Button>
         </div>
 </header>

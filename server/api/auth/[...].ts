@@ -1,12 +1,22 @@
-/* import GithubProvider from 'next-auth/providers/github'
-import Google from 'next-auth/providers/google'
+import Auth0Provider from "next-auth/providers/auth0";
+import GoogleProvider from "next-auth/providers/google";
+import Google from "@auth/core/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { NuxtAuthHandler } from '#auth'
 import { useDrizzle } from '~~/server/utils/drizzle'
+import Auth0 from "@auth/core/providers/auth0";
 
 export default NuxtAuthHandler({
-  secret: useRuntimeConfig().authSecret,
+  secret: 'test-123',
   providers: [
-    GithubProvider
-  ]
-}) */
+    Auth0Provider.default({
+      clientId: useRuntimeConfig().auth0Id,
+      clientSecret: useRuntimeConfig().auth0Secret,
+      issuer: useRuntimeConfig().auth0Issuer
+    }),
+    GoogleProvider.default({
+      clientId: useRuntimeConfig().googleClientId,
+      clientSecret: useRuntimeConfig().googleClientSecret
+    })
+  ],
+})

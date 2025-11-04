@@ -14,6 +14,8 @@ setInterval(() => {
   mins.value = diff.value % 3.6e6 / 6e4 | 0
   secs.value = Math.round(diff.value % 6e4 / 1e3)
 }, 1000)
+
+
 </script>
 
 <template>

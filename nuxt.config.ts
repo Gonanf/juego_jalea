@@ -16,6 +16,13 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nitro-cloudflare-dev'
   ],
+  runtimeConfig: {
+    auth0Id: process.env.NUXT_AUTH0_ID,
+    auth0Secret: process.env.NUXT_AUTH0_SECRET,
+    googleClientId: process.env.NUXT_GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.NUXT_GOOGLE_CLIENT_SECRET,
+    auth0Domain: process.env.NUXT_AUTH0_DOMAIN, 
+  },
 shadcn: {
     /**
      * Prefix for all the imported component
@@ -32,13 +39,14 @@ shadcn: {
     database: true
   },
 auth: {
-  isEnabled: false,
+  isEnabled: true,
     provider: {
       type: 'authjs',
-      trustHost: false,
-      addDefaultCallbackUrl: true
+      trustHost: true,
+      addDefaultCallbackUrl: true,
+      defaultProvider: 'auth0'
     },
-    baseURL: 'http://localhost:3000/api/auth',
+    //baseURL: 'http://localhost:3000/api/auth',
   },
   
    icon: {
@@ -52,7 +60,7 @@ auth: {
   },
    app: {
     head: {
-      title: 'JuegoJalea', // default fallback title
+      title: 'JuegoJalea',
       htmlAttrs: {
         lang: 'es',
       },
