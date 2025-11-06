@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@sidebase/nuxt-auth',
     '@nuxtjs/tailwindcss',
-    'nitro-cloudflare-dev'
+    'nitro-cloudflare-dev',
+    'nuxt-authorization',
   ],
 shadcn: {
     /**
