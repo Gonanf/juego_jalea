@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f8faaf11-603e-4715-8d5c-f2721e93870a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "9b6cb52d-971d-4371-bf7b-ab7fcc4c5629",
+  "prevId": "f8faaf11-603e-4715-8d5c-f2721e93870a",
   "tables": {
     "account": {
       "name": "account",
@@ -655,7 +655,7 @@
           "name": "event_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {

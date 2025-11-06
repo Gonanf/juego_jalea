@@ -1,14 +1,23 @@
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core"
 import type { AdapterAccountType } from "next-auth/adapters"
- 
+import { sql } from "drizzle-orm"
+/////////////////////// AUTHENTICATION ///////////////////////
+
 export const users = sqliteTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
+  nickname: text("nickname").unique(),
   email: text("email").unique(),
   emailVerified: integer("emailVerified", { mode: "timestamp_ms" }),
   image: text("image"),
+  created_at: text('created_at')
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  updated_at: text('updated_at')
+    .notNull()
+    .default(sql`(current_timestamp)`).$onUpdate(() => sql`(current_timestamp)`)
 })
  
 export const accounts = sqliteTable(
@@ -79,3 +88,5 @@ export const authenticators = sqliteTable(
     }),
   ]
 )
+
+
