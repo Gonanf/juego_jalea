@@ -87,7 +87,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-
+const session = await useAuth().useSession();
+const unwatch = watch(session, async () => {
+  if (!session.value.isPending){
+    if (await isTheUserOwner(session,useRoute().params.userid)) unwatch()
+  }
+})
 const schema = toTypedSchema(z.object(
   {
       cover: z.file({error: "Debe estar completo"}).max(1024*1024).optional(),

@@ -15,7 +15,7 @@
             </UiAvatar>
 
             <div>
-              <p class="text-lg">{{ session.data.user.name }}</p>
+              <p class="text-lg">{{ session.data.user.nickname?? session.data.user.name }}</p>
               <p class="text-sm">{{ session.data.user.email }}</p>
             </div>
           </UiSidebarMenuButton>
@@ -68,8 +68,17 @@
 <script lang="ts" setup>
 import { ChartArea, ChartBar, Gamepad, House, LogOut, Settings } from 'lucide-vue-next';
 import { useSidebar } from './ui/sidebar';
+import { watchOnce } from '@vueuse/core';
 const auth = useAuth();
 const session = await auth.useSession()
+
+// TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
+console.log('👷 - session:', session);
+const unwatch = watch(session, async () => {
+  if (!session.value.isPending){
+    if (await hasUsername(session)) unwatch()
+  }
+})
 
 const sidebar = useSidebar();
 </script>

@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const session = await auth().api.getSession({
     headers: event.headers,
   })
-  const user = await isTheUserOwner(db,userid!,session);
+  const user = await isTheUserOwner(db,userid!,session,'nickname');
 
   const body = await readFormData(event);
   const file = body.get('file') as File

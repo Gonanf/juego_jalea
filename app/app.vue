@@ -9,6 +9,7 @@ import {
   Store,
   BookOpen
 } from "lucide-vue-next"
+import { Toaster } from './components/ui/sonner';
 
 const sidebar_items = {
   content: [
@@ -94,7 +95,7 @@ const sidebar_items = {
 <template>
   <div class="w-screen h-screen">
     <NuxtRouteAnnouncer />
-
+    <Toaster />
     <SidebarProvider>
       <SmartSidebar :items="sidebar_items"></SmartSidebar>
 

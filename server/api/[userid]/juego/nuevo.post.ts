@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     headers: event.headers,
   })
 
-  const user = await isTheUserOwner(db,userid!,session);
+  const user = await isTheUserOwner(db,userid!,session,'nickname');
   
   const formData = await readFormData(event);
   const body = Object.fromEntries(formData.entries());
