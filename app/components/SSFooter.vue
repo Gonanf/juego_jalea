@@ -28,9 +28,9 @@
           :side-offset="4">
 
           <UiDropdownMenuGroup>
-            <UiDropdownMenuItem>
-              <Settings/>
-              Ajustes
+            <UiDropdownMenuItem @click="navigateTo({name: 'userid', params: {userid: session.data.user.nickname}})">
+              <User/>
+              Usuario
             </UiDropdownMenuItem>
             <UiDropdownMenuItem>
               <Gamepad/>
@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ChartArea, ChartBar, Gamepad, House, LogOut, Settings } from 'lucide-vue-next';
+import { ChartArea, ChartBar, Gamepad, House, LogOut, Settings, User } from 'lucide-vue-next';
 import { useSidebar } from './ui/sidebar';
 import { watchOnce } from '@vueuse/core';
 const auth = useAuth();

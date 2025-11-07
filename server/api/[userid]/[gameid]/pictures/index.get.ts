@@ -3,6 +3,6 @@ export default defineEventHandler(async (event) => {
   const gameid = getRouterParam(event,"gameid")
 
   return hubBlob().list({
-    prefix: `pictures/${userid}/${gameid}`
+    prefix: `${userid}/${gameid}/pictures`
   })
 })
