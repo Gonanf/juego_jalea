@@ -3,75 +3,107 @@
     <FormField v-slot="{ componentField }" name="cover">
       <FormItem>
         <FormLabel>Portada</FormLabel>
-        <FormControl >
-          <UiInput 
-            type="file" 
-            accept="image/*" 
-            @change="(event) => handleCoverChange(event, componentField.onChange)"
-          />
+        <FormControl>
+          <UiInput type="file" accept="image/*"
+            @change="(event) => handleCoverChange(event, componentField.onChange)" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField>   
+    </FormField>
 
     <FormField v-slot="{ componentField }" name="pictures">
       <FormItem>
         <FormLabel>Imagenes</FormLabel>
-        <FormControl >
-          <UiInput 
-            type="file" 
-            multiple 
-            accept="image/*" 
-            @change="(event) => handlePicturesChange(event, componentField.onChange)"
-          />
+        <FormControl>
+          <UiInput type="file" multiple accept="image/*"
+            @change="(event) => handlePicturesChange(event, componentField.onChange)" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField>   
+    </FormField>
 
     <FormField v-slot="{ componentField }" name="title">
       <FormItem>
         <FormLabel>Titulo</FormLabel>
-        <FormControl >
-          <UiInput type="text" v-bind="componentField"/>
+        <FormControl>
+          <UiInput type="text" v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField>   
+    </FormField>
 
     <FormField v-slot="{ componentField }" name="description">
       <FormItem>
         <FormLabel>Descripcion</FormLabel>
-        <FormControl >
-          <UiInput type="text" v-bind="componentField"/>
+        <FormControl>
+          <UiInput type="text" v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField>   
+    </FormField>
 
     <FormField v-slot="{ componentField }" name="event_id">
       <FormItem>
         <FormLabel>Evento</FormLabel>
-        <FormControl >
-          <UiInput type="text" v-bind="componentField"/>
+        <FormControl>
+          <UiInput type="text" v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField> 
+    </FormField>
 
     <FormField v-slot="{ componentField }" name="price">
       <FormItem>
         <FormLabel>Precio</FormLabel>
-        <FormControl >
-          <UiInput type="number" v-bind="componentField"/>
+        <FormControl>
+          <UiInput type="number" v-bind="componentField" />
         </FormControl>
         <FormMessage />
       </FormItem>
-    </FormField> 
+    </FormField>
+
+    <FormField v-slot="{ componentField }" name="categories">
+      <FormItem>
+        <FormLabel>Categorias</FormLabel>
+          <UiCombobox>
+            <UiComboboxAnchor asChild>
+             <FormControl>
+              <UiTagsInput :model-value="componentField.modelValue"
+            @update:model-value="componentField['onUpdate:modelValue']">
+                <UiTagsInputItem v-for="item of componentField.modelValue" :key="item" :value="item">
+                  <UiTagsInputItemText></UiTagsInputItemText>
+                  <UiTagsInputItemDelete></UiTagsInputItemDelete>
+                </UiTagsInputItem>
+
+                <UiComboboxInput>
+                  <UiTagsInputInput></UiTagsInputInput>
+                </UiComboboxInput>
+
+              <UiTagsInputInput></UiTagsInputInput>
+              </UiTagsInput>
+
+        </FormControl>
+
+              <UiComboboxList>
+                <UiComboboxEmpty />
+                <UiComboboxGroup>
+                  <UiComboboxItem key="framework.value" value="framework.label" @select.prevent="(ev) => {
+                    if (typeof ev.detail.value === 'string') {
+                      componentField.modelValue.push(ev.detail.value)
+                    }
+                  }">
+
+                  </UiComboboxItem>
+                </UiComboboxGroup>
+              </UiComboboxList>
+            </UiComboboxAnchor>
+          </UiCombobox>
+      </FormItem>
+    </FormField>
 
     <UiButton type="submit">
       Submit
-    </UiButton> 
+    </UiButton>
   </form>
 </template>
 
@@ -89,20 +121,22 @@ import {
 } from '@/components/ui/form'
 const session = await useAuth().useSession();
 const unwatch = watch(session, async () => {
-  if (!session.value.isPending){
-    if (await isTheUserOwner(session,useRoute().params.userid)) unwatch()
+  if (!session.value.isPending) {
+    if (await isTheUserOwner(session, useRoute().params.userid)) unwatch()
   }
 })
+//TODO: Add combobox
+
 const schema = toTypedSchema(z.object(
   {
-      cover: z.file({error: "Debe estar completo"}).max(1024*1024).optional(),
-      pictures: z.array(z.file({error: "Debe estar completo"}).max(2048*2048)).optional(),
-    // categories: TODO: Later
-      title: z.string({error: "Debe estar completo"}).min(1).max(128),
-      description: z.string({error: "Debe estar completo"}).min(1).max(512),
-      price: z.number({error: "Debe estar completo"}).min(0).max(60),
-      user_id: z.string({error: "Debe estar completo"}).optional(), //Because it gets set with userid
-      event_id: z.string({error: "Debe estar completo"}).optional()
+    cover: z.file({ error: "Debe estar completo" }).max(1024 * 1024).optional(),
+    pictures: z.array(z.file({ error: "Debe estar completo" }).max(2048 * 2048)).optional(),
+    categories: z.array(z.string()).optional(),
+    title: z.string({ error: "Debe estar completo" }).min(1).max(128),
+    description: z.string({ error: "Debe estar completo" }).min(1).max(512),
+    price: z.number({ error: "Debe estar completo" }).min(0).max(60),
+    user_id: z.string({ error: "Debe estar completo" }).optional(), //Because it gets set with userid
+    event_id: z.string({ error: "Debe estar completo" }).optional()
   }
 ))
 
@@ -113,7 +147,7 @@ const form = useForm({
 
 })
 
-form.setFieldValue("user_id",route.params.userid as string)
+form.setFieldValue("user_id", route.params.userid as string)
 
 const handleCoverChange = (event: Event, onChange: (value: File | undefined) => void) => {
   const target = event.target as HTMLInputElement

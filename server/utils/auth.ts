@@ -39,7 +39,7 @@ export function auth() {
           enabled: true,
         },
       },
-      trustedOrigins: ["http://locaalhost:8787","http://locaalhost:8788","http://locaalhost:3000","https://juegojalea.boldwave.org"]
+      trustedOrigins: ["http://localhost:8787","http://localhost:8788","http://localhost:3000","https://juegojalea.boldwave.org"]
   })
 
   return _auth
