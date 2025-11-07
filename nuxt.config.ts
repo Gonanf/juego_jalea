@@ -28,6 +28,9 @@ shadcn: {
     componentDir: './components/ui'
   },
   hub: {
+    bindings:{
+      compatibilityFlags: ["nodejs_compat"],
+    },
     blob: true,
     database: true
   },
