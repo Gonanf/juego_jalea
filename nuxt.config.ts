@@ -39,12 +39,12 @@ auth: {
   isEnabled: true,
     provider: {
       type: 'authjs',
-      trustHost: true,
+      trustHost: false,
       addDefaultCallbackUrl: true,
       defaultProvider: 'auth0'
     },
     origin: '/api/auth',
-    baseURL: 'https://juegojalea.boldwave.org',
+    baseURL: process.env.AUTH_ORIGIN,
   },
   
    icon: {
