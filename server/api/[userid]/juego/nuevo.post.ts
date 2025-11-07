@@ -1,11 +1,13 @@
-import { getServerSession } from "#auth";
 import { InsertGames, isTheUserOwner } from "~~/server/utils/drizzle";
 import * as z from 'zod'
+import { auth } from "~~/server/utils/auth";
 
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()
   const userid = getRouterParam(event,'userid');
-  const session = await getServerSession(event);
+  const session = await auth().api.getSession({
+    headers: event.headers,
+  })
 
   const user = await isTheUserOwner(db,userid!,session);
   

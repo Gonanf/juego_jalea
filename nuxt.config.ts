@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     '@nuxthub/core',
-    '@sidebase/nuxt-auth',
     '@nuxtjs/tailwindcss',
     'nitro-cloudflare-dev',
     'nuxt-authorization',
@@ -32,17 +31,6 @@ shadcn: {
     blob: true,
     database: true
   },
-auth: {
-  isEnabled: true,
-    provider: {
-      type: 'authjs',
-      trustHost: true,
-      addDefaultCallbackUrl: true,
-      defaultProvider: 'auth0'
-    },
-    baseURL: 'http://localhost:3000/',
-  },
-  
    icon: {
     customCollections: [
       {

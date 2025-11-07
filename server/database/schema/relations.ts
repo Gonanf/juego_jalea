@@ -1,10 +1,10 @@
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core"
 import { relations, sql } from "drizzle-orm"
-import {users} from "./authentication";
+import {user} from "./authentication";
 import {categories, events, game_categories, game_files, games, logs, permissions, pictures, puntuation, user_permissions } from "./tables";
 
 /////////////////////// RELATIONS ///////////////////////
-export const user_relation = relations(users, ({many}) => ({
+export const user_relation = relations(user, ({many}) => ({
     logs: many(logs),
     games: many(games),
     permissions: many(user_permissions),
@@ -12,7 +12,7 @@ export const user_relation = relations(users, ({many}) => ({
 }))
 
 export const game_relations = relations(games, ({one,many}) => ({
-    user: one(users,{fields: [games.user_id], references: [users.id]}),
+    user: one(user,{fields: [games.user_id], references: [user.id]}),
     event: one(events,{fields: [games.event_id], references: [events.id]}),
     puntuations: many(puntuation),
     files: many(game_files),
@@ -21,11 +21,11 @@ export const game_relations = relations(games, ({one,many}) => ({
 }))
 
 export const log_relations = relations(logs, ({one}) => ({
-    user: one(users,{fields: [logs.user_id], references: [users.id]})
+    user: one(user,{fields: [logs.user_id], references: [user.id]})
 }))
 
 export const puntuation_relations = relations(puntuation,({one}) => ({
-    user: one(users,{fields: [puntuation.user_id], references: [users.id]}),
+    user: one(user,{fields: [puntuation.user_id], references: [user.id]}),
     game: one(games,{fields: [puntuation.game_id], references: [games.id]})
 }))
 
@@ -47,7 +47,7 @@ export const category_relations = relations(categories, ({many}) => ({
 }))
 
 export const user_permissions_relations = relations(user_permissions,({one}) => ({
-    user: one(users,{fields: [user_permissions.user_id],references: [users.id]}),
+    user: one(user,{fields: [user_permissions.user_id],references: [user.id]}),
     permission: one(permissions,{fields: [user_permissions.permission_id],references: [permissions.id]})
 }))
 
@@ -56,5 +56,5 @@ export const pictures_relations = relations(pictures,({one}) => ({
 }))
 
 export const permission_relations = relations(permissions,({many}) => ({
-    users: many(user_permissions)
+    user: many(user_permissions)
 }))

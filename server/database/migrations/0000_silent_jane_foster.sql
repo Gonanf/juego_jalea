@@ -1,79 +1,80 @@
 CREATE TABLE `account` (
+	`id` text PRIMARY KEY NOT NULL,
 	`userId` text NOT NULL,
-	`type` text NOT NULL,
-	`provider` text NOT NULL,
-	`providerAccountId` text NOT NULL,
-	`refresh_token` text,
-	`access_token` text,
-	`expires_at` integer,
-	`token_type` text,
+	`accountId` text NOT NULL,
+	`providerId` text NOT NULL,
+	`accessToken` text,
+	`refreshToken` text,
+	`accessTokenExpiresAt` integer,
+	`refreshTokenExpiresAt` integer,
 	`scope` text,
-	`id_token` text,
-	`session_state` text,
-	PRIMARY KEY(`provider`, `providerAccountId`),
+	`idToken` text,
+	`password` text,
+	`expiresAt` integer,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `authenticator` (
-	`credentialID` text NOT NULL,
-	`userId` text NOT NULL,
-	`providerAccountId` text NOT NULL,
-	`credentialPublicKey` text NOT NULL,
-	`counter` integer NOT NULL,
-	`credentialDeviceType` text NOT NULL,
-	`credentialBackedUp` integer NOT NULL,
-	`transports` text,
-	PRIMARY KEY(`userId`, `credentialID`),
-	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
-);
---> statement-breakpoint
-CREATE UNIQUE INDEX `authenticator_credentialID_unique` ON `authenticator` (`credentialID`);--> statement-breakpoint
 CREATE TABLE `session` (
-	`sessionToken` text PRIMARY KEY NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`userId` text NOT NULL,
-	`expires` integer NOT NULL,
+	`token` text NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`ipAddress` text,
+	`userAgent` text,
+	`impersonatedBy` text,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
-	`name` text,
+	`name` text NOT NULL,
 	`nickname` text,
-	`email` text,
-	`emailVerified` integer,
+	`email` text NOT NULL,
+	`emailVerified` integer DEFAULT false,
 	`image` text,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL
+	`role` text,
+	`banned` integer,
+	`banReason` text,
+	`banExpires` integer,
+	`createdAt` integer,
+	`updatedAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_nickname_unique` ON `user` (`nickname`);--> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
-CREATE TABLE `verificationToken` (
+CREATE TABLE `verification` (
+	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,
-	`token` text NOT NULL,
-	`expires` integer NOT NULL,
-	PRIMARY KEY(`identifier`, `token`)
+	`value` text NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer
 );
 --> statement-breakpoint
 CREATE TABLE `categories` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL
+	`createdAt` integer,
+	`updatedAt` integer
 );
 --> statement-breakpoint
 CREATE TABLE `events` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL
+	`createdAt` integer,
+	`updatedAt` integer
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `events_name_unique` ON `events` (`name`);--> statement-breakpoint
 CREATE TABLE `game_categories` (
 	`game_id` text NOT NULL,
 	`category_id` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer,
 	PRIMARY KEY(`game_id`, `category_id`),
 	FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE cascade
@@ -85,8 +86,8 @@ CREATE TABLE `game_files` (
 	`name` text NOT NULL,
 	`link` text NOT NULL,
 	`game_id` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -97,9 +98,9 @@ CREATE TABLE `games` (
 	`price` integer,
 	`cover` text,
 	`user_id` text NOT NULL,
-	`event_id` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`event_id` text,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`event_id`) REFERENCES `events`(`id`) ON UPDATE no action ON DELETE cascade
 );
@@ -109,16 +110,16 @@ CREATE TABLE `logs` (
 	`operation` text,
 	`user_id` text NOT NULL,
 	`user_ip` text,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `permissions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL
+	`createdAt` integer,
+	`updatedAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `permissions_name_unique` ON `permissions` (`name`);--> statement-breakpoint
@@ -126,8 +127,8 @@ CREATE TABLE `pictures` (
 	`id` text PRIMARY KEY NOT NULL,
 	`picture_url` text NOT NULL,
 	`game_id` text NOT NULL,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer,
 	FOREIGN KEY (`game_id`) REFERENCES `games`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
@@ -144,8 +145,8 @@ CREATE TABLE `user_permissions` (
 	`user_id` text NOT NULL,
 	`permission_id` text NOT NULL,
 	`meta` text,
-	`created_at` text DEFAULT (current_timestamp) NOT NULL,
-	`updated_at` text DEFAULT (current_timestamp) NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer,
 	PRIMARY KEY(`user_id`, `permission_id`),
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`permission_id`) REFERENCES `permissions`(`id`) ON UPDATE no action ON DELETE cascade
