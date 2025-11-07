@@ -1,20 +1,29 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <FormField v-slot="{ componentField, handleChange, handleBlur }" name="cover">
+    <FormField v-slot="{ componentField }" name="cover">
       <FormItem>
         <FormLabel>Portada</FormLabel>
         <FormControl >
-          <UiInput type="file" accept="image/*" v-bind="componentField" @change="handleChange" @blur="handleBlur"/>
+          <UiInput 
+            type="file" 
+            accept="image/*" 
+            @change="(event) => handleCoverChange(event, componentField.onChange)"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>   
 
-    <FormField v-slot="{ componentField, handleChange, handleBlur }" name="pictures">
+    <FormField v-slot="{ componentField }" name="pictures">
       <FormItem>
         <FormLabel>Imagenes</FormLabel>
         <FormControl >
-          <UiInput type="file" multiple accept="image/*" v-bind="componentField" @change="handleChange" @blur="handleBlur"/>
+          <UiInput 
+            type="file" 
+            multiple 
+            accept="image/*" 
+            @change="(event) => handlePicturesChange(event, componentField.onChange)"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -101,33 +110,62 @@ const form = useForm({
 
 form.setFieldValue("user_id",route.params.userid as string)
 
-
-
-const onSubmit = form.handleSubmit((values) => {
-
-// TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
-console.log('👷 - values:', values);
-
-var form_data = new FormData();
-
-
-
-for ( var key in values ) {
-    if (values[key]?.constructor?.name === "Array"){
-      for (const i of values[key]){
-        form_data.append(key, i);
-      }
-      continue;
-    }
-    form_data.append(key, values[key]);
+const handleCoverChange = (event: Event, onChange: (value: File | undefined) => void) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    onChange(target.files[0])
+  } else {
+    onChange(undefined)
+  }
 }
 
-// TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
-console.log('👷 - form_data:', form_data);
+const handlePicturesChange = (event: Event, onChange: (value: File[]) => void) => {
+  const target = event.target as HTMLInputElement
+  if (target.files) {
+    onChange(Array.from(target.files))
+  } else {
+    onChange([])
+  }
+}
 
-  const fetch = useFetch(`/api/${route.params.userid}/juego/nuevo`,{
-    method: "POST",
-    body: form_data
-  }).catch((err) => alert('Error al enviar peticion:\n'+ err.data?.message))
+const onSubmit = form.handleSubmit(async (values) => {
+  try {
+    // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
+    console.log('👷 - values:', values);
+
+    const form_data = new FormData();
+
+    for (const key in values) {
+      if (key === 'pictures' && Array.isArray(values[key])) {
+        for (const file of values[key]) {
+          if (file instanceof File) {
+            form_data.append(key, file);
+          }
+        }
+      } else if (key === 'cover' && values[key] instanceof File) {
+        form_data.append(key, values[key]);
+      } else if (values[key] !== undefined && values[key] !== null) {
+        form_data.append(key, values[key]);
+      }
+    }
+
+    // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
+    console.log('👷 - form_data entries:', Array.from(form_data.entries()));
+
+    const { data, error } = await $fetch(`/api/${route.params.userid}/juego/nuevo`, {
+      method: "POST",
+      body: form_data
+    });
+
+    if (error) {
+      alert('Error al enviar peticion:\n' + error.message);
+    } else {
+      // TODO: Navigate to the game page
+      await navigateTo(`/api/${route.params.userid}/${values.title}`);
+    }
+  } catch (err) {
+    console.error('Submit error:', err);
+    alert('Error al enviar peticion:\n' + (err as any).message || 'Error desconocido');
+  }
 })
 </script>

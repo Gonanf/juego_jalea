@@ -15,7 +15,6 @@ setInterval(() => {
   secs.value = Math.round(diff.value % 6e4 / 1e3)
 }, 1000)
 
-const user = useAuth().data.value?.user
 </script>
 
 <template>
@@ -50,7 +49,6 @@ const user = useAuth().data.value?.user
 
       </div>
       <p class="text-white">Del 7 al 16 de noviembre</p>
-      <a :href="`/${user.email}/amonga`" v-if="user">GOTO NOW</a>
     </div>
     
   </div>
