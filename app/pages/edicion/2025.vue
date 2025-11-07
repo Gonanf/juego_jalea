@@ -2,7 +2,7 @@
   <div class="w-full h-full">
     <img src="/edicion/2025/Portada2_v3.png" class="w-full h-[70vh] shadow-lg object-scale-down"/>
 
-    <UiTabs default-value="descripcion" class="">
+    <UiTabs default-value="descripcion" class="w-full [&>*]:w-full">
     <UiTabsList>
       <UiTabsTrigger value="descripcion">
         Descripcion
