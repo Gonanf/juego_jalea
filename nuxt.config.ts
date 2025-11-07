@@ -40,7 +40,8 @@ auth: {
       addDefaultCallbackUrl: true,
       defaultProvider: 'auth0'
     },
-    baseURL: 'http://localhost:3000/',
+    origin: '/api/auth',
+    baseURL: 'https://juegojalea.boldwave.org/',
   },
   
    icon: {
