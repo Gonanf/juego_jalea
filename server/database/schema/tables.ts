@@ -115,3 +115,14 @@ export const puntuation = sqliteTable('puntuation', {
       columns: [puntuation.game_id, puntuation.user_id],
     }),
   ])
+
+export const event_winners = sqliteTable('event_winners', {
+  event_id: text('user_id').notNull().references(() => user.id, { onDelete: "cascade" }),
+  game_id: text('game_id').notNull().references(() => games.id, { onDelete: "cascade" }),
+},
+
+  (event_winners) => [
+    primaryKey({
+      columns: [event_winners.game_id, event_winners.event_id],
+    }),
+  ])

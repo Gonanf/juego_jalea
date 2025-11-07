@@ -1,7 +1,7 @@
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core"
 import { relations, sql } from "drizzle-orm"
 import {user} from "./authentication";
-import {categories, events, game_categories, game_files, games, logs, permissions, pictures, puntuation, user_permissions } from "./tables";
+import {categories, event_winners, events, game_categories, game_files, games, logs, permissions, pictures, puntuation, user_permissions } from "./tables";
 
 /////////////////////// RELATIONS ///////////////////////
 export const user_relation = relations(user, ({many}) => ({
@@ -17,7 +17,8 @@ export const game_relations = relations(games, ({one,many}) => ({
     puntuations: many(puntuation),
     files: many(game_files),
     pictures: many(pictures),
-    categories: many(game_categories)
+    categories: many(game_categories),
+    wins: many(event_winners)
 }))
 
 export const log_relations = relations(logs, ({one}) => ({
@@ -30,7 +31,8 @@ export const puntuation_relations = relations(puntuation,({one}) => ({
 }))
 
 export const event_relations = relations(events,({many}) => ({
-    games: many(games)
+    games: many(games),
+    winners: many(event_winners)
 }))
 
 export const game_files_relations = relations(game_files,({one}) => ({
@@ -57,4 +59,9 @@ export const pictures_relations = relations(pictures,({one}) => ({
 
 export const permission_relations = relations(permissions,({many}) => ({
     user: many(user_permissions)
+}))
+
+export const event_winners_relations = relations(event_winners,({one}) => ({
+    event: one(events,{fields: [event_winners.event_id], references: [events.id]}),
+    game: one(games,{fields: [event_winners.game_id], references: [games.id]})
 }))
