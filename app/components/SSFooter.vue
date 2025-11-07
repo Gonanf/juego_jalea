@@ -1,22 +1,22 @@
 <template>
   <UiSidebarMenu>
 
-    <UiSidebarMenuItem v-if="false">
+    <UiSidebarMenuItem v-if="session.data">
 
       <UiDropdownMenu>
         <UiDropdownMenuTrigger asChild>
 
           <UiSidebarMenuButton size="lg" @click="(sidebar.isMobile.value && !sidebar.open.value) && sidebar.toggleSidebar()">
             <UiAvatar class="h-8 w-8 rounded-lg">
-              <UiAvatarImage :src="'AUTH TODO:'"  referrerPolicy="no-referrer"/>
+              <UiAvatarImage :src="session.data.user.image!"  referrerPolicy="no-referrer"/>
               <UiAvatarFallback>
                 U
               </UiAvatarFallback>
             </UiAvatar>
 
             <div>
-              <p class="text-lg">{{ console.log('AUTH TODO:') }}</p>
-              <p class="text-sm">{{ console.log('AUTH TODO:') }}</p>
+              <p class="text-lg">{{ session.data.user.name }}</p>
+              <p class="text-sm">{{ session.data.user.email }}</p>
             </div>
           </UiSidebarMenuButton>
 
@@ -41,7 +41,7 @@
               Estadisticas
             </UiDropdownMenuItem>
             <UiDropdownMenuSeparator/>
-            <UiDropdownMenuItem @click="console.log('AUTH TODO:')">
+            <UiDropdownMenuItem @click="auth.signOut">
               <LogOut/>
               Cerrar sesion
             </UiDropdownMenuItem>
@@ -53,7 +53,7 @@
     </UiSidebarMenuItem>
 
     <UiSidebarMenuItem v-else>
-      <UiSidebarMenuButton size="lg" @click="console.log('AUTH TODO:')">
+      <UiSidebarMenuButton size="lg" @click="auth.signIn.social({provider: 'google'})">
         <UiAvatar class="h-8 w-8 rounded-lg">
           <UiAvatarFallback class=" border-solid border-black border-1">
             U
@@ -68,7 +68,8 @@
 <script lang="ts" setup>
 import { ChartArea, ChartBar, Gamepad, House, LogOut, Settings } from 'lucide-vue-next';
 import { useSidebar } from './ui/sidebar';
-// const auth = useAuth();
+const auth = useAuth();
+const session = await auth.useSession()
 
 const sidebar = useSidebar();
 </script>
