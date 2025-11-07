@@ -152,17 +152,11 @@ const onSubmit = form.handleSubmit(async (values) => {
     // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
     console.log('👷 - form_data entries:', Array.from(form_data.entries()));
 
-    const { data, error } = await $fetch(`/api/${route.params.userid}/juego/nuevo`, {
+    await $fetch(`/api/${route.params.userid}/juego/nuevo`, {
       method: "POST",
       body: form_data
     });
 
-    if (error) {
-      alert('Error al enviar peticion:\n' + error.message);
-    } else {
-      // TODO: Navigate to the game page
-      await navigateTo(`/api/${route.params.userid}/${values.title}`);
-    }
   } catch (err) {
     console.error('Submit error:', err);
     alert('Error al enviar peticion:\n' + (err as any).message || 'Error desconocido');

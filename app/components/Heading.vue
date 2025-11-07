@@ -7,7 +7,7 @@ console.log(auth.data.value);
 </script>
 
 <template>
-    <header class="w-full h-16 flex justify-between shadow-md items-center bg-amber-100" >
+    <header class="w-full h-16 flex justify-between shadow-md items-center bg-amber-100 sticky top-0" >
     <main>
       <SidebarTrigger/>
     </main>
