@@ -36,7 +36,7 @@ shadcn: {
     database: true
   },
 auth: {
-  isEnabled: true,
+  isEnabled: false,
     provider: {
       type: 'authjs',
       trustHost: false,

@@ -9,9 +9,7 @@ import {
   Store,
   BookOpen
 } from "lucide-vue-next"
-const auth = useAuth();
 
-console.log(auth.data.value);
 const sidebar_items = {
   content: [
     {

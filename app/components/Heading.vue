@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import {Button} from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
-const auth = useAuth();
-
-console.log(auth.data.value);
 </script>
 
 <template>

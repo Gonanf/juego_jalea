@@ -1,14 +1,15 @@
-import { getServerSession } from "#auth";
+// import { getServerSession } from "#auth";
 import { InsertGames, isTheUserOwner } from "~~/server/utils/drizzle";
 import * as z from 'zod'
 
 export default defineEventHandler(async (event) => {
+  return 'in progress';
   const db = useDrizzle()
   const userid = getRouterParam(event,'userid');
-  const session = await getServerSession(event);
+/*   const session = await getServerSession(event);
 
   const user = await isTheUserOwner(db,userid!,session);
-  
+   */
   const formData = await readFormData(event);
   const body = Object.fromEntries(formData.entries());
   body.pictures = formData.getAll('pictures')
