@@ -19,7 +19,8 @@ const sidebar_items = {
       titulo: "Ediciones",
       items: [
         {
-          titulo: "2025"
+          titulo: "2025",
+          url: {name: 'edicion-2025'}
         },
         {
           titulo: "2024"
@@ -67,7 +68,7 @@ const sidebar_items = {
         },
         {
           titulo: "Requisitos",
-          url: {name: 'about-introduccion'}
+          url: {name: 'about-requisitos'}
         },
         {
           titulo: "Sobre la tienda",
