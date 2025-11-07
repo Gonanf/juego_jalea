@@ -29,6 +29,9 @@ shadcn: {
     componentDir: './components/ui'
   },
   hub: {
+    bindings:{
+      compatibilityFlags: ["nodejs_compat"]
+    },
     blob: true,
     database: true
   },
@@ -41,7 +44,7 @@ auth: {
       defaultProvider: 'auth0'
     },
     origin: '/api/auth',
-    baseURL: 'https://juegojalea.boldwave.org/',
+    baseURL: 'https://juegojalea.boldwave.org',
   },
   
    icon: {
