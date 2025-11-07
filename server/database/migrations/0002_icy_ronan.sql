@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `events_name_unique` ON `events` (`name`);

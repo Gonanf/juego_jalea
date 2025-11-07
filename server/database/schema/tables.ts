@@ -38,7 +38,7 @@ export const events = sqliteTable('events',{
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text('name'),
+  name: text('name').unique(),
   created_at: text('created_at')
   .notNull()
   .default(sql`(current_timestamp)`),
