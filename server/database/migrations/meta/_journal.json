@@ -5,8 +5,22 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1762109109993,
-      "tag": "0000_wise_eternity",
+      "when": 1762459142650,
+      "tag": "0000_lowly_sugar_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1762462373663,
+      "tag": "0001_confused_firestar",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762476839910,
+      "tag": "0002_icy_ronan",
       "breakpoints": true
     }
   ]

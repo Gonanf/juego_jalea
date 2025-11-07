@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@sidebase/nuxt-auth',
     '@nuxtjs/tailwindcss',
-    'nitro-cloudflare-dev'
+    'nitro-cloudflare-dev',
+    'nuxt-authorization',
   ],
 shadcn: {
     /**
@@ -32,13 +33,14 @@ shadcn: {
     database: true
   },
 auth: {
-  isEnabled: false,
+  isEnabled: true,
     provider: {
       type: 'authjs',
-      trustHost: false,
-      addDefaultCallbackUrl: true
+      trustHost: true,
+      addDefaultCallbackUrl: true,
+      defaultProvider: 'auth0'
     },
-    baseURL: 'http://localhost:3000/api/auth',
+    baseURL: 'http://localhost:3000/',
   },
   
    icon: {
@@ -52,7 +54,7 @@ auth: {
   },
    app: {
     head: {
-      title: 'JuegoJalea', // default fallback title
+      title: 'JuegoJalea',
       htmlAttrs: {
         lang: 'es',
       },
