@@ -5,6 +5,7 @@ import { NuxtAuthHandler } from '#auth'
 let _auth: ReturnType<typeof NuxtAuthHandler>
 export default eventHandler( event => {
     if (!_auth) _auth = NuxtAuthHandler({
+    secret: useAppConfig().authSecret,
     adapter: DrizzleAdapter(useDrizzle()),
     secret: 'test-123',
     providers: [
