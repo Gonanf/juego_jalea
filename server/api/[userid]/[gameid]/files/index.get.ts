@@ -1,3 +1,8 @@
 export default defineEventHandler(async (event) => {
-  return 'Hello Nitro'
+    const userid = getRouterParam(event,"userid")
+  const gameid = getRouterParam(event,"gameid")
+
+  return hubBlob().list({
+    prefix: `${userid}/${gameid}/files`
+  })
 })

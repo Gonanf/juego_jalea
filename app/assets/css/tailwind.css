@@ -139,3 +139,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .font-gabarito {
+    font-family: 'Gabarito', sans-serif;
+  }
+  .font-fjalla-one {
+    font-family: 'Fjalla One', sans-serif;
+  }
+}

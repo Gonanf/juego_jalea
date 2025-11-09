@@ -1,7 +1,8 @@
 import { D1Dialect } from 'kysely-d1'
 import type { D1Database } from '@cloudflare/workers-types'
 import { Kysely } from 'kysely'
-import { betterAuth, string } from "better-auth"
+import { betterAuth, string  } from "better-auth"
+import { admin } from "better-auth/plugins"
 import { DrizzleD1Database } from "drizzle-orm/d1";
 
 let _auth: ReturnType<typeof betterAuth>
@@ -39,7 +40,12 @@ export function auth() {
           enabled: true,
         },
       },
-      trustedOrigins: ["http://localhost:8787","http://localhost:8788","http://localhost:3000","https://juegojalea.boldwave.org"]
+      trustedOrigins: ["http://localhost:8787","http://localhost:8788","http://localhost:3000","https://juegojalea.boldwave.org"],
+      admin: {
+        enabled: true,
+        defaultRole: "user",
+        adminRole: "admin"
+      }
   })
 
   return _auth

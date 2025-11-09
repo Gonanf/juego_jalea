@@ -43,6 +43,12 @@ shadcn: {
       },
     ],
   },
+  fonts: {
+    families: [
+      { name: 'Gabarito', provider: 'google' },
+      { name: 'Fjalla One', provider: 'google' },
+    ],
+  },
    app: {
     head: {
       title: 'JuegoJalea',
