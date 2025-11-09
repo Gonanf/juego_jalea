@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()
+  const name = getRouterParam(event,'name')
   const session = await auth().api.getSession({
     headers: event.headers
   })
@@ -29,16 +30,12 @@ const isAdmin = await auth().api.userHasPermission({
     })
   }
   
-  const games = await db.query.games.findMany({
+  const result = await db.query.categories.findFirst({
+    where: eq(tables.categories.name, name!),
     with: {
-      user: true,
-      event: true,
-      puntuations: true,
-      files: true,
-      pictures: true,
-      categories: true
+      games: true
     }
   })
   
-  return games
+  return result
 })

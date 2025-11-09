@@ -12,7 +12,15 @@ export default defineEventHandler(async (event) => {
       puntuations: true,
       files: true,
       pictures: true,
-      categories: true
+      categories: {
+        columns: {
+          game_id: false,
+          category_id: false
+        },
+        with:{
+          category: true
+        }
+      }
     }
   })
 })

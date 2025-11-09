@@ -29,16 +29,11 @@ const isAdmin = await auth().api.userHasPermission({
     })
   }
   
-  const games = await db.query.games.findMany({
+  const users = await db.query.categories.findMany({
     with: {
-      user: true,
-      event: true,
-      puntuations: true,
-      files: true,
-      pictures: true,
-      categories: true
+      games : true
     }
   })
   
-  return games
+  return users
 })

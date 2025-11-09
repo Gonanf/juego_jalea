@@ -1,9 +1,10 @@
 export default defineEventHandler(async (event) => {
   const userid = getRouterParam(event, 'userid')
   const db = useDrizzle()
-  const session = await auth.api.getSession({
-    headers: getHeaders(event)
+  const session = await auth().api.getSession({
+    headers: event.headers
   })
+
   
   if (!session || !session.user) {
     throw createError({
@@ -12,9 +13,15 @@ export default defineEventHandler(async (event) => {
     })
   }
   
-  const isAdmin = await auth.api.isAdmin({
-    headers: getHeaders(event)
-  })
+const isAdmin = await auth().api.userHasPermission({
+    body: {
+        userId: session.user.id,
+        role: session.user.role,
+        permission: { "events": ["create", "update"] }
+    },
+});
+
+
   
   if (!isAdmin) {
     throw createError({

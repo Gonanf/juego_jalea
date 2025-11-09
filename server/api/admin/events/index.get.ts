@@ -1,3 +1,5 @@
+
+
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()
   const session = await auth().api.getSession({
@@ -20,7 +22,6 @@ const isAdmin = await auth().api.userHasPermission({
     },
 });
 
-
   
   if (!isAdmin) {
     throw createError({
@@ -29,16 +30,7 @@ const isAdmin = await auth().api.userHasPermission({
     })
   }
   
-  const games = await db.query.games.findMany({
-    with: {
-      user: true,
-      event: true,
-      puntuations: true,
-      files: true,
-      pictures: true,
-      categories: true
-    }
-  })
+  const result = await db.query.events.findMany()
   
-  return games
+  return result
 })

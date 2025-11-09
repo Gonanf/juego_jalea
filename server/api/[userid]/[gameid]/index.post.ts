@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
   const gameid = getRouterParam(event, 'gameid')
   const db = useDrizzle()
 
-  const session = await auth.api.getSession({
-    headers: getHeaders(event)
+  const session = await auth().api.getSession({
+    headers: event.headers
   })
 
   await isTheUserOwner(db, userid!, session, 'nickname')

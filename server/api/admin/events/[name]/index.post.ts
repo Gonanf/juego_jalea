@@ -1,5 +1,7 @@
 export default defineEventHandler(async (event) => {
+  
   const db = useDrizzle()
+  const body = getRouterParam(event,'name')
   const session = await auth().api.getSession({
     headers: event.headers
   })
@@ -28,17 +30,8 @@ const isAdmin = await auth().api.userHasPermission({
       statusMessage: 'Admin access required'
     })
   }
+
+  const result = await db.insert(tables.events).values({name: body!});
   
-  const games = await db.query.games.findMany({
-    with: {
-      user: true,
-      event: true,
-      puntuations: true,
-      files: true,
-      pictures: true,
-      categories: true
-    }
-  })
-  
-  return games
+  return result
 })

@@ -3,28 +3,6 @@ import { sql } from "drizzle-orm"
 import { user } from "./authentication";
 
 /////////////////////// TABLES ///////////////////////
-export const permissions = sqliteTable('permissions', {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: text("name").notNull().unique(),
-  createdAt: integer({ mode: 'timestamp_ms' }).$default(() => new Date()),
-  updatedAt: integer({ mode: 'timestamp_ms' }).$onUpdate(() => new Date()),
-})
-
-export const user_permissions = sqliteTable('user_permissions', {
-  user_id: text('user_id').notNull().references(() => user.id, { onDelete: "cascade" }),
-  permission_id: text('permission_id').notNull().references(() => permissions.id, { onDelete: "cascade" }),
-  meta: text('meta', { mode: 'json' }),
-  createdAt: integer({ mode: 'timestamp_ms' }).$default(() => new Date()),
-  updatedAt: integer({ mode: 'timestamp_ms' }).$onUpdate(() => new Date()),
-},
-
-  (user_permissions) => [
-    primaryKey({
-      columns: [user_permissions.user_id, user_permissions.permission_id],
-    }),
-  ])
 
 export const events = sqliteTable('events', {
   id: text("id")

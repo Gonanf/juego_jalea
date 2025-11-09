@@ -8,9 +8,10 @@ export default defineEventHandler(async (event) => {
   const formData = await readFormData(event);
   
   const user_data = await getUserData(db, userid!, 'nickname')
-  const session = await auth.api.getSession({
-    headers: getHeaders(event)
+  const session = await auth().api.getSession({
+    headers: event.headers
   })
+
   
   await isTheUserOwner(db, userid!, session, 'nickname')
   

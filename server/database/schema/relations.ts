@@ -1,13 +1,12 @@
 import { integer, sqliteTable, text, primaryKey } from "drizzle-orm/sqlite-core"
 import { relations, sql } from "drizzle-orm"
 import {user} from "./authentication";
-import {categories, event_winners, events, game_categories, game_files, games, logs, permissions, pictures, puntuation, user_permissions } from "./tables";
+import {categories, event_winners, events, game_categories, game_files, games, logs, pictures, puntuation } from "./tables";
 
 /////////////////////// RELATIONS ///////////////////////
 export const user_relation = relations(user, ({many}) => ({
     logs: many(logs),
     games: many(games),
-    permissions: many(user_permissions),
     puntuations: many(puntuation)
 }))
 
@@ -48,17 +47,8 @@ export const category_relations = relations(categories, ({many}) => ({
     games: many(game_categories)
 }))
 
-export const user_permissions_relations = relations(user_permissions,({one}) => ({
-    user: one(user,{fields: [user_permissions.user_id],references: [user.id]}),
-    permission: one(permissions,{fields: [user_permissions.permission_id],references: [permissions.id]})
-}))
-
 export const pictures_relations = relations(pictures,({one}) => ({
     game: one(games,{fields: [pictures.game_id], references: [games.id]})
-}))
-
-export const permission_relations = relations(permissions,({many}) => ({
-    user: many(user_permissions)
 }))
 
 export const event_winners_relations = relations(event_winners,({one}) => ({

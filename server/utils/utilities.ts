@@ -1,14 +1,15 @@
 import { DrizzleD1Database } from "drizzle-orm/d1";
+import { WhereNode } from "kysely";
 import * as z from 'zod';
 
 export async function postGame(formData: FormData, db: DrizzleD1Database<_>, session: any, game: any, request: URL ,mode?: "update" ){
   //TODO: Revise performance
   const body: Record<string, any> = Object.fromEntries(formData.entries());
   body.pictures = formData.getAll('pictures').filter((f) => f instanceof File);
-  body.categories = formData.getAll('categories').map(String);
+  body.categories = body.categories.split(',')
   body.files = formData.getAll('files').filter((f) => f instanceof File);
-  body.file_type = formData.getAll('file_types').map(String);
-  body.file_name = formData.getAll('file_names').map(String);
+  body.file_types = formData.getAll('file_types');
+  body.file_names = formData.getAll('file_names');
   body.price = Number(formData.get('price') ?? 0);
   body.user_id = String(session.user.id);
 
@@ -20,7 +21,7 @@ export async function postGame(formData: FormData, db: DrizzleD1Database<_>, ses
   }
   const prepared_url = `${request.protocol}//${request.host}/api/${session.user.nickname}`
   // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
-  console.log('👷 - formData:', body);
+  console.log('👷 - body:', body);
 
   //TODO: allow event id again once i fix this
   const parsed = InsertGames.extend({ 
@@ -52,6 +53,12 @@ export async function postGame(formData: FormData, db: DrizzleD1Database<_>, ses
   }
 
   for (const cat of categories ?? []) {
+    console.log("cat:", cat);
+    if (!db.query.categories.findFirst({
+      where: eq(tables.categories.id,cat)
+    })){
+     continue 
+    }
     await db.insert(tables.game_categories).values({ category_id: cat, game_id: result.insertedId })
   }
 
