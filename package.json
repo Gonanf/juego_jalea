@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.7",
     "drizzle-zod": "^0.8.3",
+    "embla-carousel-vue": "^8.6.0",
     "eslint": "^9.39.0",
     "kysely": "^0.28.8",
     "kysely-d1": "^0.4.0",

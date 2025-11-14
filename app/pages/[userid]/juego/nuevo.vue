@@ -145,11 +145,16 @@
                                     class="size-32 rounded-md border-2 border-gray-300 object-cover"
                                 />
                                 <UiButton
-                                    variant="destructive"
+                                    variant="outline"
                                     class="absolute top-0 right-0 rounded-full"
                                     size="icon"
                                     type="button"
-                                    @click="removePicture(index)"
+                                    @click="
+                                        removePicture(
+                                            index,
+                                            componentField.onChange,
+                                        )
+                                    "
                                 >
                                     <X class="w-4 h-4" />
                                 </UiButton>
@@ -607,6 +612,10 @@ const handlePicturesChange = (
     } else {
         onChange([]);
     }
+};
+const removePicture = (index: number, onChange: (value: File[]) => void) => {
+    pictures.value.splice(index, 1);
+    onChange(pictures.value.map((item) => item.file));
 };
 
 const onSubmit = form.handleSubmit(async (values) => {
