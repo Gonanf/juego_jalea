@@ -464,7 +464,7 @@ const schema = toTypedSchema(
         file_names: z.array(z.string().max(50)).optional(),
         title: z.string({ error: "Debe estar completo" }).min(1).max(128),
         description: z.string({ error: "Debe estar completo" }).min(1).max(512),
-        price: z.number({ error: "Debe estar completo" }).min(0).max(60),
+        price: z.number().min(0).max(60).optional(),
         user_id: z.string({ error: "Debe estar completo" }).optional(), //Because it gets set with userid
         event_id: z.string({ error: "Debe estar completo" }).optional(),
     }),
@@ -616,17 +616,18 @@ const onSubmit = form.handleSubmit(async (values) => {
 
         const form_data = new FormData();
 
-        // Procesar campos normales
+        // This took a lot of time to figure out
         type FormValues = typeof values;
         for (const key in values) {
             const value = values[key as keyof FormValues];
-            if (Array.isArray(value) && value instanceof File) {
+            if (Array.isArray(value) && value[0] instanceof File) {
                 for (const item of value) {
-                    form_data.append(key, item);
+                    form_data.append(key, item as File);
                 }
+                console.log("Array of files:", key, value);
                 //Why does it take it as a string?
-            } else if (key === "cover" && values[key] instanceof File) {
-                form_data.append(key, values[key]);
+            } else if (key === "cover" && value instanceof File) {
+                form_data.append(key, value as File);
             } else if (value !== undefined && value !== null) {
                 form_data.append(key, String(value));
             }
@@ -655,6 +656,10 @@ const onSubmit = form.handleSubmit(async (values) => {
 
         toast({ title: "Juego creado exitosamente!" });
         form.resetForm();
+        await navigateTo({
+            name: "userid-gameid",
+            params: { userid: route.params.userid, gameid: values.title },
+        });
     } catch (err) {
         console.error("Submit error:", err);
         toast({
