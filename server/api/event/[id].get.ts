@@ -16,6 +16,11 @@ export default defineEventHandler(async (event) => {
             user: true,
             pictures: true,
             files: true,
+            categories: {
+              with: {
+                category: true
+              }
+            },
         },
     })
     const evaluators = db.select().from(tables.user).innerJoin(tables.event_evaluators, and(eq(tables.user.id, tables.event_evaluators.user_id),eq(tables.event_evaluators.event_id,event_data?.id!))).as('evaluators')
@@ -38,6 +43,11 @@ export default defineEventHandler(async (event) => {
                     user: true,
                     pictures: true,
                     files: true,
+            categories: {
+              with: {
+                category: true
+              }
+            },
                 }
             }
         },

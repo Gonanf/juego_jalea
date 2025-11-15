@@ -10,6 +10,11 @@ export default defineEventHandler(async (event) => {
             puntuations: true,
             user: true,
             pictures: true,
+            categories: {
+              with: {
+                category: true
+              }
+            },
             files: true,
             event: true,
         },

@@ -14,6 +14,11 @@ export default defineEventHandler(async (event) => {
             user: true,
             pictures: true,
             files: true,
+            categories: {
+              with: {
+                category: true
+              }
+            },
             event: {
                 with: {
                     evaluators: true
