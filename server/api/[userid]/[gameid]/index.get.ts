@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
             punctuation: sql`avg(${tables.puntuation.puntuation})`.as('punctuation'),
         }
     })
-    const evaluators = db.select().from(tables.user).innerJoin(tables.event_evaluators, and(eq(tables.user.id, tables.event_evaluators.user_id),eq(tables.event_evaluators.event_id,event_data?.id!))).as('evaluators')
+    const evaluators = db.select().from(tables.user).innerJoin(tables.event_evaluators, and(eq(tables.user.id, tables.event_evaluators.user_id),eq(tables.event_evaluators.event_id,games_data?.event?.id!))).as('evaluators')
 
 
     const [evaluation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).innerJoin(evaluators, and(eq(tables.puntuation.game_id, games_data?.id), eq(tables.puntuation.user_id, evaluators.user.id)))

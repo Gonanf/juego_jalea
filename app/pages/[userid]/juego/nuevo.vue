@@ -117,8 +117,8 @@
                                         </UiButton>
                                     </UiCarouselItem>
                                 </UiCarouselContent>
-                                <UiCarouselPrevious size="sm" v-if="pictures.length"/>
-                                <UiCarouselNext size="sm" v-if="pictures.length"/>
+                                <UiCarouselPrevious size="sm" v-if="pictures.length" type="button"/>
+                                <UiCarouselNext size="sm" v-if="pictures.length" type="button"/>
                             </UiCarousel>
 
                             <UiButton type="button" variant="outline" size="icon" class="w-12 h-12 rounded-full"
@@ -503,6 +503,7 @@ const onSubmit = form.handleSubmit(async (values) => {
         // This took a lot of time to figure out
         type FormValues = typeof values;
         for (const key in values) {
+            if (key === "files") continue
             const value = values[key as keyof FormValues];
             if (Array.isArray(value) && value[0] instanceof File) {
                 for (const item of value) {
