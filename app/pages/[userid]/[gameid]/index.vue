@@ -158,6 +158,19 @@
             </FormField>
           </div>
             <UiSeparator />
+          <FormField v-slot="{ componentField }" name="puntuar">
+                <FormItem class="w-full">
+                    <FormLabel class="text-base font-medium mb-2 block">Puntuar</FormLabel>
+                    <FormControl>
+                                <div class="grid-5">
+                                  <UiButton  v-for="n in 5" @click="updateRating(n)" variant="ghost">
+                                    <Star :key="n"
+              :class="{ 'fill-black text-black': n <= rating?.puntuation, 'text-gray-300': n > rating?.puntuation }" ></Star>
+                                  </UiButton>
+                                </div>
+                    </FormControl>
+                </FormItem>
+            </FormField>
     </div>
 </template>
 
@@ -165,6 +178,7 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import * as z from "zod";
+import { cn } from '@/lib/utils'
 import {
     FormControl,
     FormDescription,
@@ -174,7 +188,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { toast } from "vue-sonner";
-import { Plus, Download, X } from "lucide-vue-next";
+import { Plus, Download, X, Star } from "lucide-vue-next";
 
 const route = useRoute()
 /* SETUP(INITIAL FETCH) */
@@ -195,4 +209,17 @@ const months = [
     ];
 const temp = new Date(game_data.value.createdAt)
  game_data.value.createdAt = `${temp.getDate()} de ${months[temp.getMonth()]} de ${temp.getFullYear()}` 
+
+ const {data: rating} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{deep: true})
+console.log("RATING",rating)
+ async function updateRating(n: number){
+ const {data} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{
+  method: "POST",
+  body: {
+    puntuation: n
+  }
+ })
+ rating.value.puntuation = n
+ console.log(rating.value?.puntuation)
+ }
 </script>

@@ -7,6 +7,7 @@ const {data: currentEvent} = await useFetch(`/api/event/2025`)
 
 console.log(currentEvent)
 
+
 const newsGames = [
   {
     title: 'Titulo',
@@ -64,10 +65,10 @@ const newsGames = [
   <div class="flex gap-[10px] items-start w-full h-full bg-white">
     <div class="flex flex-1 flex-col gap-[10px] h-full items-center justify-end min-h-0 min-w-0">
       <!-- Header Image -->
-      <div class="border border-[#dadada] h-[200px] rounded-[10px] w-full overflow-hidden">
-        <div class="flex flex-col gap-[10px] h-[200px] items-start overflow-hidden rounded-[inherit] w-full">
+      <div class="border border-[#dadada] h-[25%] rounded-[10px] w-full overflow-hidden">
+        <div class="flex flex-col gap-[10px] h-full items-start overflow-hidden rounded-[inherit] w-full">
           <div class="flex-1 min-h-0 min-w-0 w-full relative">
-             <NuxtLink :to="{name: 'edicion-2025'}" class="h-[25%]"><img src="/edicion/2025/Portada.png" class="w-full h-full shadow-lg object-cover"/></NuxtLink> 
+             <NuxtLink :to="{name: 'edicion-2025'}" class="h-full"><img src="/edicion/2025/Portada.png" class="w-full h-full shadow-lg object-cover"/></NuxtLink> 
           </div>
         </div>
       </div>
@@ -78,7 +79,7 @@ const newsGames = [
         Ganador del Juego Jalea 2025
       </p>
       <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full" >
-        <RatingCard :rating="0" label="Publico" />
+        <RatingCard :rating="currentEvent?.winners[0]?.game.punctuation" label="Publico" />
         <ProductoMini
         :description="currentEvent?.winners[0]?.game.description!"
         :image="currentEvent?.winners[0]?.game.cover!"
@@ -87,7 +88,7 @@ const newsGames = [
         :price="currentEvent?.winners[0]?.game.price!"
           class="h-[201px] w-[264.667px]"
         />
-        <RatingCard :rating="0" label="Evaluadores" />
+        <RatingCard :rating="currentEvent?.winners[0]?.game.evaluation" label="Evaluadores" />
       </div>
        </div>
 
@@ -106,7 +107,7 @@ const newsGames = [
           :title="game.title"
           :description="game.description"
           :price="game.price"
-          :rating="game.rating"
+          :rating="game.punctuation"
           class="flex-1 min-h-0 min-w-0"
         />
             </UiCarouselItem>

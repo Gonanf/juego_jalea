@@ -1,4 +1,4 @@
-import { avg, inArray } from "drizzle-orm"
+import { avg, desc, inArray, like } from "drizzle-orm"
 
 export default defineEventHandler(async (event) => {
     const db = useDrizzle()
@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
     const games_data = await db.query.games.findMany({
       limit: Number(query.limit)?? 9,
       offset: Number(query.offset) ? (Number(query.offset)-1)*(Number(query.limit)??9) : 0,
+      orderBy: [desc(tables.games.createdAt)],
+      where: query.search ? like(tables.games.title, `%${query.search}%`) : undefined,
         with: {
             puntuations: true,
             user: true,
@@ -36,5 +38,5 @@ export default defineEventHandler(async (event) => {
         const [punctuation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).where(eq(tables.puntuation.game_id, val?.id))
         games_data[index].punctuation = punctuation.avg ?? 0;
     }
-    return games_data
+    return {games: games_data, count: await db.$count(tables.games)}
 })
