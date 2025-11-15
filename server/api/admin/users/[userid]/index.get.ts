@@ -42,11 +42,7 @@ const isAdmin = await auth().api.userHasPermission({
   const userWithDetails = await db.query.user.findFirst({
     where: eq(tables.user.id, userid!),
     with: {
-      user_permissions: {
-        with: {
-          permission: true
-        }
-      },
+      puntuations: true,
       games: {
         with: {
           puntuations: true,

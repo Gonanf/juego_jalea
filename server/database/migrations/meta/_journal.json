@@ -15,6 +15,20 @@
       "when": 1762711687463,
       "tag": "0001_left_random",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763223045237,
+      "tag": "0002_long_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1763227629895,
+      "tag": "0003_abnormal_the_santerians",
+      "breakpoints": true
     }
   ]
 }

@@ -18,7 +18,7 @@ const isAdmin = await auth().api.userHasPermission({
     body: {
         userId: session.user.id,
         role: session.user.role,
-        permission: { "events": ["create", "update"] }
+        permission: { "category": ["create", "update"] }
     },
 });
 

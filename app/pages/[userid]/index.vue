@@ -50,7 +50,7 @@
                     :src="session.data.user.image!"
                     alt="usuario"
                     referrerPolicy="no-referrer"
-                    class="object-cover w-[15%] rounded-md shadow-lg"
+                    class="object-cover w-[15%] rounded-full shadow-lg border-2 border-dashed border-slate-200"
                 />
             </div>
         </UiCardContent>

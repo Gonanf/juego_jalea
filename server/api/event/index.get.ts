@@ -3,6 +3,7 @@ export default defineEventHandler(async (event) => {
         with: {
             games: true,
             winners: true,
+            evaluators: true,
         }
     })
 })

@@ -3,18 +3,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import ProductoMini from '@/components/ProductoMini.vue'
 import RatingCard from '@/components/RatingCard.vue'
 
-// Local image path
-const imgPortada1 = '/figma-assets/portada1.jpg'
+const {data: currentEvent} = await useFetch(`/api/event/2025`)
 
-// Sample data - replace with real data from your API
-const winnerGame = {
-  title: 'Titulo',
-  description: 'Descripcion',
-  price: 'Gratuito/?$',
-  rating: 5,
-  publicRating: 5,
-  evaluatorRating: 5,
-}
+console.log(currentEvent)
 
 const newsGames = [
   {
@@ -35,6 +26,37 @@ const newsGames = [
     price: 'Gratuito/?$',
     rating: 4,
   },
+    {
+    title: 'Titulo',
+    description: 'Descripcion',
+    price: 'Gratuito/?$',
+    rating: 4,
+  },
+    {
+    title: 'Titulo',
+    description: 'Descripcion',
+    price: 'Gratuito/?$',
+    rating: 4,
+  },
+    {
+    title: 'Titulo',
+    description: 'Descripcion',
+    price: 'Gratuito/?$',
+    rating: 4,
+  },
+    {
+    title: 'Titulo',
+    description: 'Descripcion',
+    price: 'Gratuito/?$',
+    rating: 4,
+  },
+    {
+    title: 'Titulo',
+    description: 'Descripcion',
+    price: 'Gratuito/?$',
+    rating: 4,
+  },
+
 ]
 </script>
 
@@ -51,47 +73,47 @@ const newsGames = [
       </div>
 
       <!-- Winner Section -->
+       <div class="h-full grow flex flex-col justify-center items-center" v-if="currentEvent?.winners.length">
       <p class="font-gabarito font-normal text-[16px] text-black">
         Ganador del Juego Jalea 2025
       </p>
-      <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full">
-        <RatingCard :rating="winnerGame.publicRating" label="Publico" />
+      <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full" >
+        <RatingCard :rating="0" label="Publico" />
         <ProductoMini
-          :title="winnerGame.title"
-          :description="winnerGame.description"
-          :price="winnerGame.price"
-          :rating="winnerGame.rating"
+        :description="currentEvent?.winners[0]?.game.description!"
+        :image="currentEvent?.winners[0]?.game.cover!"
+        :title="currentEvent?.winners[0]?.game.title!"
+        :key="0"
+        :price="currentEvent?.winners[0]?.game.price!"
           class="h-[201px] w-[264.667px]"
         />
-        <RatingCard :rating="winnerGame.evaluatorRating" label="Evaluadores" />
+        <RatingCard :rating="0" label="Evaluadores" />
       </div>
+       </div>
+
 
       <!-- News Section -->
-      <p class="font-gabarito font-normal text-[16px] text-black">
+      <div class="h-full grow flex flex-col justify-center items-center">
+        <p class="font-gabarito font-normal text-[16px] text-black">
         Novedades
       </p>
-      <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full">
-        <button
-          class="overflow-hidden relative shrink-0 size-[48px] flex items-center justify-center hover:bg-gray-100 rounded transition-colors"
-          aria-label="Anterior"
-        >
-          <ChevronLeft class="size-6" />
-        </button>
-        <ProductoMini
-          v-for="(game, index) in newsGames"
+      <UiCarousel class="w-[90%]">
+          <UiCarouselPrevious />
+          <UiCarouselContent>
+            <UiCarouselItem v-for="(game, index) in newsGames" :key="index" class=" md:basis-1/3 ">
+<ProductoMini
           :key="index"
           :title="game.title"
           :description="game.description"
           :price="game.price"
           :rating="game.rating"
-          class="flex-1 h-full min-h-0 min-w-0"
+          class="flex-1 min-h-0 min-w-0"
         />
-        <button
-          class="overflow-hidden relative shrink-0 size-[48px] flex items-center justify-center hover:bg-gray-100 rounded transition-colors"
-          aria-label="Siguiente"
-        >
-          <ChevronRight class="size-6" />
-        </button>
+            </UiCarouselItem>
+            
+          </UiCarouselContent>
+          <UiCarouselNext />
+      </UiCarousel>
       </div>
     </div>
   </div>
