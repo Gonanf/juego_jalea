@@ -2,12 +2,27 @@
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import ProductoMini from '@/components/ProductoMini.vue'
 import RatingCard from '@/components/RatingCard.vue'
+import { toast } from 'vue-sonner'
 
-const {data: currentEvent} = await useFetch(`/api/event/2025`)
+const {data: currentEvent, status: event_status, error: event_error} = await useFetch(`/api/event/2025`, {lazy: true})
 
 console.log(currentEvent)
 
-const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
+
+const session = await useAuth().useSession();
+
+watch(event_status, (s) => {
+  if (s === 'error')
+    toast('Error obteniendo datos del evento', { description: event_error.value?.data })
+})
+
+
+const {data: newsGames, status: new_status, error: new_error} = await useFetch('/api/games?limit=9&offset=1', {lazy: true})
+
+watch(new_status, (s) => {
+  if (s === 'error')
+    toast('Error obteniendo nuevos juegos', { description: new_error.value?.data })
+})
 </script>
 
 <template>
@@ -23,21 +38,23 @@ const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
       </div>
 
       <!-- Winner Section -->
-       <div class="flex flex-col justify-center items-center" v-if="currentEvent?.winners.length">
+       <div class="flex flex-col justify-center items-center w-full">
       <p class="font-gabarito font-normal text-[16px] text-black">
         Ganador del Juego Jalea 2025
       </p>
-      <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full" >
-        <RatingCard :rating="currentEvent?.winners[0]?.game.punctuation" label="Publico" />
+      <ProductoSkeleton class="flex-1 min-h-0 min-w-0 h-96 w-full" v-if="event_status === 'pending'"/>
+      <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full" v-else-if="currentEvent && currentEvent?.winners.length">
+        <RatingCard :rating="currentEvent?.winners[0]?.game.punctuation ?? 0" label="Publico" />
         <ProductoMini
         :description="currentEvent?.winners[0]?.game.description!"
         :image="currentEvent?.winners[0]?.game.cover!"
         :title="currentEvent?.winners[0]?.game.title!"
+        :rating="currentEvent?.winners[0]?.game.puntuation"
         :key="0"
         :price="currentEvent?.winners[0]?.game.price!"
         :username="currentEvent?.winners[0]?.game.user.nickname"
         />
-        <RatingCard :rating="currentEvent?.winners[0]?.game.evaluation" label="Evaluadores" />
+        <RatingCard :rating="currentEvent?.winners[0]?.game.evaluation ?? 0" label="Evaluadores" />
       </div>
       <UiSeparator class="my-8" />
        </div>
@@ -48,10 +65,31 @@ const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
         <p class="font-gabarito font-normal text-[16px] text-black">
         Novedades
       </p>
+
+          <UiEmpty v-if="newsGames && !newsGames.games.length">
+      <UiEmptyHeader>
+        <UiEmptyMedia variant="icon">
+          <XCircle></XCircle>
+        </UiEmptyMedia>
+        <UiEmptyTitle>Sin juegos</UiEmptyTitle>
+        <UiEmptyDescription>No hay juegos</UiEmptyDescription>
+      </UiEmptyHeader>
+      <UiEmptyContent>
+        <UiButton variant="destructive" asChild v-if="session.data">
+          <NuxtLink :to="{ name: 'userid-juego-nuevo', params: { userid: session.data.user.nickname } }">
+            Crear uno
+          </NuxtLink>
+        </UiButton>
+      </UiEmptyContent>
+    </UiEmpty>
+
       <UiCarousel>
           <UiCarouselContent >
-            <UiCarouselItem v-for="[index, game] of newsGames?.games.entries()" :key="index" class=" md:basis-1/3 ">
-<ProductoMini
+            <UiCarouselItem v-for="i of 3" :key="i" class=" md:basis-1/3 "  v-if="new_status === 'pending'">
+          <ProductoSkeleton class="flex-1 min-h-0 min-w-0 h-48 w-48" />
+          </UiCarouselItem>  
+          <UiCarouselItem v-for="[index, game] of newsGames?.games.entries()" :key="index" class=" md:basis-1/3 " v-else>
+<LazyProductoMini
           :key="index"
           :title="game.title"
           :description="game.description"
