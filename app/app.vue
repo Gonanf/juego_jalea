@@ -9,6 +9,7 @@ import {
   Store,
   BookOpen
 } from "lucide-vue-next"
+import { Toaster } from './components/ui/sonner';
 
 const sidebar_items = {
   content: [
@@ -39,7 +40,8 @@ const sidebar_items = {
           titulo: "Populares"
         },
         {
-          titulo: "Novedades"
+          titulo: "Novedades",
+          url: {name: 'novedades'}
         },
         {
           titulo: "Mas vendidos"
@@ -48,7 +50,8 @@ const sidebar_items = {
           titulo: "Mas gustados"
         },
         {
-          titulo: "Ganadores de Juegos Jaleas"
+          titulo: "Ganadores de Juegos Jaleas",
+          url: {name: 'ganadores'}
         },
       ]
     },
@@ -94,7 +97,7 @@ const sidebar_items = {
 <template>
   <div class="w-screen h-screen">
     <NuxtRouteAnnouncer />
-
+    <Toaster />
     <SidebarProvider>
       <SmartSidebar :items="sidebar_items"></SmartSidebar>
 

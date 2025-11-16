@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     '@nuxthub/core',
-    '@sidebase/nuxt-auth',
     '@nuxtjs/tailwindcss',
     'nitro-cloudflare-dev',
     'nuxt-authorization',
@@ -30,23 +29,11 @@ shadcn: {
   },
   hub: {
     bindings:{
-      compatibilityFlags: ["nodejs_compat"]
+      compatibilityFlags: ["nodejs_compat"],
     },
     blob: true,
     database: true
   },
-auth: {
-  isEnabled: false,
-    provider: {
-      type: 'authjs',
-      trustHost: false,
-      addDefaultCallbackUrl: true,
-      defaultProvider: 'auth0'
-    },
-    origin: '/api/auth',
-    baseURL: process.env.AUTH_ORIGIN,
-  },
-  
    icon: {
     customCollections: [
       {
@@ -54,6 +41,12 @@ auth: {
         dir: './app/assets/jj',
         recursive: true
       },
+    ],
+  },
+  fonts: {
+    families: [
+      { name: 'Gabarito', provider: 'google' },
+      { name: 'Fjalla One', provider: 'google' },
     ],
   },
    app: {
