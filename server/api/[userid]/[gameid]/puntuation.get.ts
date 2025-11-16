@@ -3,7 +3,8 @@ import * as z from 'zod'
 export default defineEventHandler(async (event) => {
     const db = useDrizzle()
     const userid = getRouterParam(event,'userid')
-    const gameid = getRouterParam(event,'gameid')
+        let gameid = getRouterParam(event,'gameid')
+    gameid = gameid?.replaceAll('%20',' ')
     const session = await auth().api.getSession({
     headers: event.headers,
   })

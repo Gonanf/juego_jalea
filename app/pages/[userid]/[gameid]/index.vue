@@ -208,8 +208,8 @@ const {data: game_data} = await useFetch(`/api/${route.params.userid}/${route.pa
         "Diciembre",
     ];
 const temp = new Date(value.data.value.createdAt)
-console.log(temp, value.data.value.createdAt)
-if (isNaN(temp)){
+console.log(temp, value.data.value?.createdAt)
+if (isNaN(temp) || !value.data.value.createdAt){
  return value
 }
  value.data.value.createdAt = `${temp.getDate()} de ${months[temp.getMonth()]} de ${temp.getFullYear()}` 
@@ -217,7 +217,10 @@ if (isNaN(temp)){
 })
 
 
- const {data: rating} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{deep: true})
+
+ const {data: rating} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`)
+console.log(rating)
+ 
  async function updateRating(n: number){
  const {data} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{
   method: "POST",
@@ -225,7 +228,12 @@ if (isNaN(temp)){
     puntuation: n
   }
  })
- rating.value.puntuation = n
+  // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
+ console.log('👷 - rating:', rating);
+ if (!rating.value) return
+
+
+ rating.value = {...rating.value, puntuation: n}
  console.log(rating.value?.puntuation)
  }
 </script>

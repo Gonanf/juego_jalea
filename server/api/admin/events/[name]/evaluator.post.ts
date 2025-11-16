@@ -1,5 +1,7 @@
 export default defineEventHandler(async (event) => {
+  
   const db = useDrizzle()
+  const body = await readBody<{id: string}>(event)
   const name = getRouterParam(event,'name')
   const session = await auth().api.getSession({
     headers: event.headers
@@ -30,26 +32,30 @@ const isAdmin = await auth().api.userHasPermission({
     })
   }
 
-
   const e = await db.query.events.findFirst({
-    where: eq(tables.events.name, getRouterParam(event,'name')!),
-    with: {
-      evaluators: true
-    }
+    where: eq(tables.events.name, name!)
   })
 
-  if (!e?.evaluators.find((f) => f.user_id == session.user.id)){
+if (!e) {
     throw createError({
-      statusCode: 403,
-      statusMessage: 'Not an evaluator'
+      statusCode: 404,
+      statusMessage: 'Event not found'
     })
   }
 
-  const game = await db.query.games.findFirst({
-    where: eq(tables.games.title, getRouterParam(event,'winner')!)
+  const user = await db.query.user.findFirst({
+    where: eq(tables.user.id, body.id)
   })
 
-  const result = await db.insert(tables.event_winners).values({event_id: e?.id!, game_id: game?.id!})
+  if (!user) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'User not found'
+    })
+  }
+
+
+  const result = await db.insert(tables.event_evaluators).values({event_id: e?.id, user_id: user.id});
   
   return result
 })
