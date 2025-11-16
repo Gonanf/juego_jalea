@@ -1,4 +1,4 @@
-import { avg } from "drizzle-orm";
+import { avg, desc } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
     const db = useDrizzle()
@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
         where: eq(tables.user.nickname,getRouterParam(event,'userid')!),
         with: {
             games: {
+                orderBy: [desc(tables.games.createdAt)],
                 with: {
           puntuations: true,
           pictures: true,

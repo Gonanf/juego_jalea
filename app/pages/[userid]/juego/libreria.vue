@@ -1,4 +1,11 @@
 <template>
+    <div class="flex flex-end w-full justify-end">
+        <UiButton variant="destructive" class="rounded-bl-full pl-5" asChild>
+            <NuxtLink :to="{name: 'userid-juego-nuevo', params: {userid: route.params.userid}}">
+            Subir juego
+            </NuxtLink>
+        </UiButton>
+    </div>
     <div class="h-full grow flex flex-col justify-center items-center p-5">
         <p class="font-gabarito font-normal text-[16px] text-black">
         Mis Juegos

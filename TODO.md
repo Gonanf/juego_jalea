@@ -10,3 +10,5 @@
   Line 10 – `//TODO: Complete`
 - **server/api/admin/users/[userid]/role.put.ts**
   Line 54 – `//TODO: Rethink the permission system using the BetterAuth roles system`
+
+# [] Lazy fetch all the resources

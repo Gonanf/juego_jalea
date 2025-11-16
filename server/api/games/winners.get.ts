@@ -1,4 +1,4 @@
-import { avg, inArray, like } from "drizzle-orm"
+import { avg, desc, inArray, like } from "drizzle-orm"
 
 export default defineEventHandler(async (event) => {
   const db = useDrizzle()

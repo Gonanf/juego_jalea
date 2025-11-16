@@ -7,6 +7,12 @@ export default defineEventHandler(async (event) => {
         where: eq(tables.user.nickname, getRouterParam(event, 'userid')!)
     })
 
+    if (!user){
+        throw createError({
+      statusCode: 404,
+      statusMessage: 'User not found'
+    })
+    }
     const games_data = await db.query.games.findFirst({
         where: and(eq(tables.games.user_id, user?.id!), eq(tables.games.title, getRouterParam(event, 'gameid')!)),
         with: {
@@ -26,6 +32,13 @@ export default defineEventHandler(async (event) => {
             }
         },
     })
+
+    if (!games_data){
+        throw createError({
+      statusCode: 404,
+      statusMessage: 'The game was not found'
+    })
+    }
 if (games_data?.event){
     const evaluators = db.select().from(tables.user).innerJoin(tables.event_evaluators, and(eq(tables.user.id, tables.event_evaluators.user_id),eq(tables.event_evaluators.event_id,games_data?.event?.id))).as('evaluators')
         const [evaluation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).innerJoin(evaluators, and(eq(tables.puntuation.game_id, games_data?.id), eq(tables.puntuation.user_id, evaluators.user.id)))

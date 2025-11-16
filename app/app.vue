@@ -40,7 +40,8 @@ const sidebar_items = {
           titulo: "Populares"
         },
         {
-          titulo: "Novedades"
+          titulo: "Novedades",
+          url: {name: 'novedades'}
         },
         {
           titulo: "Mas vendidos"
@@ -49,7 +50,8 @@ const sidebar_items = {
           titulo: "Mas gustados"
         },
         {
-          titulo: "Ganadores de Juegos Jaleas"
+          titulo: "Ganadores de Juegos Jaleas",
+          url: {name: 'ganadores'}
         },
       ]
     },

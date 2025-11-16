@@ -32,11 +32,11 @@
               <User/>
               Usuario
             </UiDropdownMenuItem>
-            <UiDropdownMenuItem>
+            <UiDropdownMenuItem @click="navigateTo({name: 'userid-juegos-libreria', params: {userid: session.data.user.nickname}})">
               <Gamepad/>
               Juegos
             </UiDropdownMenuItem>
-            <UiDropdownMenuItem>
+            <UiDropdownMenuItem disabled>
               <ChartBar/>
               Estadisticas
             </UiDropdownMenuItem>
