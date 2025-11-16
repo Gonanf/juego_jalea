@@ -192,8 +192,8 @@ import { Plus, Download, X, Star } from "lucide-vue-next";
 
 const route = useRoute()
 /* SETUP(INITIAL FETCH) */
-const {data: game_data} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}`)
-const months = [
+const {data: game_data} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}`).then((value) => {
+  const months = [
         "Enero",
         "Febrero",
         "Marzo",
@@ -207,11 +207,17 @@ const months = [
         "Noviembre",
         "Diciembre",
     ];
-const temp = new Date(game_data.value.createdAt)
- game_data.value.createdAt = `${temp.getDate()} de ${months[temp.getMonth()]} de ${temp.getFullYear()}` 
+const temp = new Date(value.data.value.createdAt)
+console.log(temp, value.data.value.createdAt)
+if (isNaN(temp)){
+ return value
+}
+ value.data.value.createdAt = `${temp.getDate()} de ${months[temp.getMonth()]} de ${temp.getFullYear()}` 
+ return value
+})
+
 
  const {data: rating} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{deep: true})
-console.log("RATING",rating)
  async function updateRating(n: number){
  const {data} = await useFetch(`/api/${route.params.userid}/${route.params.gameid}/puntuation`,{
   method: "POST",
