@@ -23,7 +23,7 @@ const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
       </div>
 
       <!-- Winner Section -->
-       <div class="h-full grow flex flex-col justify-center items-center" v-if="currentEvent?.winners.length">
+       <div class="flex flex-col justify-center items-center" v-if="currentEvent?.winners.length">
       <p class="font-gabarito font-normal text-[16px] text-black">
         Ganador del Juego Jalea 2025
       </p>
@@ -36,7 +36,6 @@ const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
         :key="0"
         :price="currentEvent?.winners[0]?.game.price!"
         :username="currentEvent?.winners[0]?.game.user.nickname"
-          class="h-[201px] w-[264.667px]"
         />
         <RatingCard :rating="currentEvent?.winners[0]?.game.evaluation" label="Evaluadores" />
       </div>

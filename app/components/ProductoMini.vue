@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="flex flex-col gap-[10px] items-start w-full">
       <div
         class="bg-[#dadada] h-[100px] w-full rounded"
-        :style="image ? { backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"
+        :style="image ? { backgroundImage: `url('${image}')`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"
       />
       <div class="flex flex-col gap-[10px] items-start w-full">
         <div class="flex items-start justify-between w-full">
