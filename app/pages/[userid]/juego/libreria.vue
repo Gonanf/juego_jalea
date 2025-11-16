@@ -10,7 +10,28 @@
         <p class="font-gabarito font-normal text-[16px] text-black">
         Mis Juegos
       </p>
+      <UiEmpty v-if="data && !data.games.length">
+            <UiEmptyHeader>
+                <UiEmptyMedia variant="icon">
+                <XCircle></XCircle>
+                </UiEmptyMedia>
+                <UiEmptyTitle>Sin juegos</UiEmptyTitle>
+                <UiEmptyDescription>No creaste ningun juego, apreta el boton de "Crear juego" para hacer uno</UiEmptyDescription>
+            </UiEmptyHeader>
+            <UiEmptyContent>
+                <UiButton variant="destructive" class="rounded-bl-full pl-5" asChild>
+            <NuxtLink :to="{name: 'userid-juego-nuevo', params: {userid: route.params.userid}}">
+            Subir juego
+            </NuxtLink>
+        </UiButton>
+            </UiEmptyContent>
+      </UiEmpty>
+
+
+
       <div :class="cn('grid', 'grid-cols-3', `grid-rows-${limit / 3}`,'w-full','h-full','gap-4')" >
+        <ProductoSkeleton v-for="value in 9" class="flex-1 min-h-0 min-w-0 h-full w-full" v-if="status === 'pending'"/>
+        
 <ProductoMini
           :key="index"
           :title="game.title"
@@ -20,6 +41,7 @@
           :rating="game.punctuation?? 0"
           :username="data.nickname"
           class="flex-1 min-h-0 min-w-0 h-full w-full"
+          v-else
           v-for="[index,game] of data?.games.entries()"
         />
       </div>
@@ -28,7 +50,9 @@
 </template>
 
 <script setup lang="ts">
+import { watchPausable } from '@vueuse/core';
 import { cn } from '~/lib/utils';
+import { XCircle } from 'lucide-vue-next';
 //TODO: Complete this
 
 const route = useRoute()
@@ -41,6 +65,6 @@ const unwatch = watch(session, async () => {
 });
 
 
-const {data} = await useFetch(`/api/${route.params.userid}`);
+const {data, status, error} = await useFetch(`/api/${route.params.userid}`, {lazy: true});
 
 </script>

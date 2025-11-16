@@ -14,5 +14,5 @@ export default defineEventHandler(async (event) => {
   })
   const body = await readValidatedBody(event,schema.parse);
 
-  return await db.update(tables.user).set(body);
+  return await db.update(tables.user).set(body).where(eq(tables.user.id,userid));
 })

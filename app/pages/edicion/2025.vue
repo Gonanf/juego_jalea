@@ -1,6 +1,17 @@
 <template>
   <div class="w-full h-full">
-    <img src="/edicion/2025/Portada2_v3.png" class="w-full h-[70vh] shadow-lg object-scale-down"/>
+    <div class="w-full h-[70vh] relative">
+    <img src="/edicion/2025/Portada2_v3.png" class="w-full h-full shadow-lg object-scale-down ">
+      
+    </img>
+        <UiButton variant="destructive" class="rounded-bl-full pl-5 absolute top-0 right-0" asChild v-if="session.data">
+            <NuxtLink :to="{name: 'userid-juego-nuevo', params: {userid: session.data.user.nickname}}">
+            Subir juego
+            </NuxtLink>
+        </UiButton>
+    </div>
+
+
 
     <UiTabs default-value="descripcion" class="w-full [&>*]:w-full">
     <UiTabsList>
@@ -80,5 +91,7 @@
 </template>
 
 <script lang="ts" setup>
+const auth = useAuth();
+const session = await auth.useSession()
 
 </script>
