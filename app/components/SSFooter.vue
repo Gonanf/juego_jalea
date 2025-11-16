@@ -28,11 +28,11 @@
           :side-offset="4">
 
           <UiDropdownMenuGroup>
-            <UiDropdownMenuItem @click="navigateTo({name: 'userid', params: {userid: session.data.user.nickname}})">
+            <UiDropdownMenuItem @select="async () => await navigateTo({name: 'userid', params: {userid: session.data.user.nickname}})">
               <User/>
               Usuario
             </UiDropdownMenuItem>
-            <UiDropdownMenuItem @click="navigateTo({name: 'userid-juego-libreria', params: {userid: session.data.user.nickname}})">
+            <UiDropdownMenuItem @select="async () => await navigateTo({name: 'userid-juego-libreria', params: {userid: session.data.user.nickname}})">
               <Gamepad/>
               Juegos
             </UiDropdownMenuItem>
@@ -41,7 +41,7 @@
               Estadisticas
             </UiDropdownMenuItem>
             <UiDropdownMenuSeparator/>
-            <UiDropdownMenuItem @click="auth.signOut">
+            <UiDropdownMenuItem @select="auth.signOut">
               <LogOut/>
               Cerrar sesion
             </UiDropdownMenuItem>
