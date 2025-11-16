@@ -7,9 +7,10 @@
         </UiButton>
     </div>
     <div class="h-full grow flex flex-col justify-center items-center p-5">
-        <p class="font-gabarito font-normal text-[16px] text-black">
+        <p class="font-gabarito font-normal text-lg text-black">
         Mis Juegos
       </p>
+      <UiSeparator></UiSeparator>
       <UiEmpty v-if="data && !data.games.length">
             <UiEmptyHeader>
                 <UiEmptyMedia variant="icon">
@@ -18,13 +19,6 @@
                 <UiEmptyTitle>Sin juegos</UiEmptyTitle>
                 <UiEmptyDescription>No creaste ningun juego, apreta el boton de "Crear juego" para hacer uno</UiEmptyDescription>
             </UiEmptyHeader>
-            <UiEmptyContent>
-                <UiButton variant="destructive" class="rounded-bl-full pl-5" asChild>
-            <NuxtLink :to="{name: 'userid-juego-nuevo', params: {userid: route.params.userid}}">
-            Subir juego
-            </NuxtLink>
-        </UiButton>
-            </UiEmptyContent>
       </UiEmpty>
 
 
@@ -32,7 +26,7 @@
       <div :class="cn('grid', 'grid-cols-3', `grid-rows-${limit / 3}`,'w-full','h-full','gap-4')" >
         <ProductoSkeleton v-for="value in 9" class="flex-1 min-h-0 min-w-0 h-full w-full" v-if="status === 'pending'"/>
         
-<ProductoMini
+<LazyProductoMini
           :key="index"
           :title="game.title"
           :description="game.description"
@@ -53,7 +47,7 @@
 import { watchPausable } from '@vueuse/core';
 import { cn } from '~/lib/utils';
 import { XCircle } from 'lucide-vue-next';
-//TODO: Complete this
+import { toast } from 'vue-sonner';
 
 const route = useRoute()
 /* SESSION */
@@ -66,5 +60,10 @@ const unwatch = watch(session, async () => {
 
 
 const {data, status, error} = await useFetch(`/api/${route.params.userid}`, {lazy: true});
+
+watch(status, (s) => {
+    if (s === 'error')
+    toast('Error obteniendo juegos del usuario', {description: error.value?.data})
+})
 
 </script>
