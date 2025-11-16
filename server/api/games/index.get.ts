@@ -29,14 +29,15 @@ export default defineEventHandler(async (event) => {
 
     // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
     console.log('👷 - val:', val);
+            const [punctuation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).where(eq(tables.puntuation.game_id, val?.id))
+        games_data[index].punctuation = punctuation.avg ?? 0;
       if (!val.event){
         continue
       }
         const evaluators = db.select().from(tables.user).innerJoin(tables.event_evaluators, and(eq(tables.user.id, tables.event_evaluators.user_id),eq(tables.event_evaluators.event_id,val.event?.id))).as('evaluators')
         const [evaluation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).innerJoin(evaluators, and(eq(tables.puntuation.game_id, val?.id), eq(tables.puntuation.user_id, evaluators.user.id)))
         games_data[index].evaluation = evaluation.avg ?? 0;
-        const [punctuation] = await db.select({ avg: avg(tables.puntuation.puntuation) }).from(tables.puntuation).where(eq(tables.puntuation.game_id, val?.id))
-        games_data[index].punctuation = punctuation.avg ?? 0;
+
     }
     return {games: games_data, count: await db.$count(tables.games)}
 })

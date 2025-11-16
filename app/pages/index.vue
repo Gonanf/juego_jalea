@@ -7,58 +7,7 @@ const {data: currentEvent} = await useFetch(`/api/event/2025`)
 
 console.log(currentEvent)
 
-
-const newsGames = [
-  {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-  {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 5,
-  },
-  {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-    {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-    {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-    {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-    {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-    {
-    title: 'Titulo',
-    description: 'Descripcion',
-    price: 'Gratuito/?$',
-    rating: 4,
-  },
-
-]
+const {data: newsGames} = await useFetch('/api/games?limit=9&offset=1')
 </script>
 
 <template>
@@ -86,35 +35,45 @@ const newsGames = [
         :title="currentEvent?.winners[0]?.game.title!"
         :key="0"
         :price="currentEvent?.winners[0]?.game.price!"
+        :username="currentEvent?.winners[0]?.game.user.nickname"
           class="h-[201px] w-[264.667px]"
         />
         <RatingCard :rating="currentEvent?.winners[0]?.game.evaluation" label="Evaluadores" />
       </div>
+      <UiSeparator class="my-8" />
        </div>
 
 
       <!-- News Section -->
-      <div class="h-full grow flex flex-col justify-center items-center">
+      <div class="h-full flex flex-col items-center">
         <p class="font-gabarito font-normal text-[16px] text-black">
         Novedades
       </p>
-      <UiCarousel class="w-[90%]">
-          <UiCarouselPrevious />
-          <UiCarouselContent>
-            <UiCarouselItem v-for="(game, index) in newsGames" :key="index" class=" md:basis-1/3 ">
+      <UiCarousel>
+          <UiCarouselContent >
+            <UiCarouselItem v-for="[index, game] of newsGames?.games.entries()" :key="index" class=" md:basis-1/3 ">
 <ProductoMini
           :key="index"
           :title="game.title"
           :description="game.description"
+          :image="game.cover"
           :price="game.price"
           :rating="game.punctuation"
+          :username="game.user.nickname"
           class="flex-1 min-h-0 min-w-0"
         />
             </UiCarouselItem>
             
           </UiCarouselContent>
+          <UiCarouselPrevious />
           <UiCarouselNext />
       </UiCarousel>
+      <UiSeparator class="my-8"></UiSeparator>
+      <UiButton asChild>
+        <NuxtLink :to="{name: 'novedades'}">
+          Ver mas
+        </NuxtLink>
+      </UiButton>
       </div>
     </div>
   </div>

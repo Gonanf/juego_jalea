@@ -10,8 +10,10 @@
           :title="game.title"
           :description="game.description"
           :price="game.price"
-          :rating="game.punctuation"
-          class="flex-1 min-h-0 min-w-0"
+          :image="game.cover"
+          :rating="game.punctuation?? 0"
+          :username="game.user.nickname"
+          class="flex-1 min-h-0 min-w-0 h-full w-full"
           v-for="[index,game] of data?.games.entries()"
         />
       </div>
