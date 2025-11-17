@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+nitro: {
+    experimental: {
+      openAPI: true
+    }
+  },
   css: ["./app/assets/css/tailwind.css"],
   modules: [
     '@nuxt/eslint',
