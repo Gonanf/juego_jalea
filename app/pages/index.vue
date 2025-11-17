@@ -23,6 +23,8 @@ watch(new_status, (s) => {
   if (s === 'error')
     toast('Error obteniendo nuevos juegos', { description: new_error.value?.data })
 })
+
+console.log(newsGames)
 </script>
 
 <template>
@@ -38,13 +40,13 @@ watch(new_status, (s) => {
       </div>
 
       <!-- Winner Section -->
-       <div class="flex flex-col justify-center items-center w-full">
+       <div class="flex flex-col justify-center items-center w-full" v-if="event_status === 'pending' || currentEvent" >
       <p class="font-gabarito font-normal text-[16px] text-black">
         Ganador del Juego Jalea 2025
       </p>
       <ProductoSkeleton class="flex-1 min-h-0 min-w-0 h-96 w-full" v-if="event_status === 'pending'"/>
       <div class="flex flex-1 gap-[10px] items-center justify-center min-h-0 min-w-0 overflow-hidden p-[10px] w-full" v-else-if="currentEvent && currentEvent?.winners.length">
-        <RatingCard :rating="currentEvent?.winners[0]?.game.punctuation ?? 0" label="Publico" />
+        <RatingCard :rating="currentEvent?.winners[0]?.game.puntuation ?? 0" label="Publico" />
         <ProductoMini
         :description="currentEvent?.winners[0]?.game.description!"
         :image="currentEvent?.winners[0]?.game.cover!"
@@ -83,6 +85,7 @@ watch(new_status, (s) => {
       </UiEmptyContent>
     </UiEmpty>
 
+
       <UiCarousel>
           <UiCarouselContent >
             <UiCarouselItem v-for="i of 3" :key="i" class=" md:basis-1/3 "  v-if="new_status === 'pending'">
@@ -102,16 +105,18 @@ watch(new_status, (s) => {
             </UiCarouselItem>
             
           </UiCarouselContent>
-          <UiCarouselPrevious />
-          <UiCarouselNext />
+          <UiCarouselPrevious v-if="newsGames && newsGames.games.length"/>
+          <UiCarouselNext  v-if="newsGames && newsGames.games.length"/>
       </UiCarousel>
+      <div v-if="newsGames && newsGames.games.length">
       <UiSeparator class="my-8"></UiSeparator>
-      <UiButton asChild>
+      <UiButton asChild >
         <NuxtLink :to="{name: 'novedades'}">
           Ver mas
         </NuxtLink>
       </UiButton>
-      </div>
+  </div>
+    </div>
     </div>
   </div>
 </template>
