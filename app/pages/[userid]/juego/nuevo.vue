@@ -71,7 +71,7 @@
 
             <!-- PRECIO -->
             <FormField v-slot="{ componentField }" name="price">
-                <FormItem class="hidden">
+                <FormItem>
                     <FormLabel class="text-base font-medium mb-2 h-fit">Precio</FormLabel>
                     <FormControl>
                         <UiInput type="number" v-bind="componentField" default-value="0"/>
