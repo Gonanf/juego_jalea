@@ -24,6 +24,8 @@ export function isTheUserOwner(session,userid){
     fatal: true
     })
   }
+  if (session.value.data.user.role == 'admin') return true
+
 
   if (session.value.data.user.id != userid && session.value.data.user.nickname != userid && session.value.data.user.email != userid){
      throw createError({

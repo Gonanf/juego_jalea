@@ -70,12 +70,11 @@
             </div>
 
             <!-- PRECIO -->
-            <FormField v-slot="{ componentField }" name="price" class="hidden">
+            <FormField v-slot="{ componentField }" name="price">
                 <FormItem class="hidden">
                     <FormLabel class="text-base font-medium mb-2 h-fit">Precio</FormLabel>
-                    <FormDescription>(Deshabilitado, Luego se integrara compras)</FormDescription>
                     <FormControl>
-                        <UiInput type="number" v-bind="componentField" disabled default-value="0"/>
+                        <UiInput type="number" v-bind="componentField" default-value="0"/>
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -319,6 +318,7 @@ const route = useRoute();
 const session = await useAuth().useSession();
 const unwatch = watch(session, async () => {
     if (!session.value.isPending) {
+        if (session.value.data?.user.role === 'admin') unwatch()
         if (await isTheUserOwner(session, useRoute().params.userid)) unwatch();
     }
 });
@@ -350,11 +350,7 @@ const schema = toTypedSchema(
     }),
 );
 
-const form = useForm({
-    validationSchema: schema,
-});
 
-form.setFieldValue("user_id", String(route.params.userid));
 
 /* FIELDS */
 
@@ -379,16 +375,7 @@ const creationDate = computed(() => {
     return `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
 });
 
-const selectedEventName = computed(() => {
-    const eventId = form.values.event_id;
-    if (!eventId) return null;
 
-    const event = events.value.find((e) => {
-        return e.id === eventId;
-    });
-
-    return event ? event.name : null;
-});
 
 /*  HELPERS   */
 const getCategoryName = (id: string) => {
@@ -437,15 +424,7 @@ const handleFileChange = (
     }
 };
 
-watch(
-    () => form.values.files,
-    (files) => {
-        if (!files || files.length === 0) {
-            fileItems.value = [{ file: null, type: "", name: "" }];
-        }
-    },
-    { deep: true },
-);
+
 
 const handleCoverChange = (
     event: Event,
@@ -469,6 +448,76 @@ const handleCoverChange = (
 };
 
 const pictures = ref<{ image: string; file: File }[]>([]);
+
+
+let editingCover = undefined
+const editing = ref(false)
+const editingData = ref(undefined)
+if (route.query.edit) {
+  editing.value = true
+  const {data: temp} = await useFetch(`/api/${route.params.userid}/${route.query.edit}`)
+
+  // TODO: ⚠️ DEBUG LOG, DELETE AFTER DEBUGGING
+  console.log('👷 - temp:', temp);
+  editingData.value = temp.value
+  
+  coverPreview.value = editingData.value.cover
+  editingData.value.pictures.forEach(async (v) => {
+    const response = await fetch(`${window.location.origin}${v.picture_url}`);
+    const data = await response.blob();
+      pictures.value.push({
+      image: v.picture_url,
+      file: new File([data], v.picture_url, {
+        type: data.type
+      })
+    })
+  })
+
+  if (import.meta.client){
+    const response = await fetch(editingData.value.cover);
+  const data = await response.blob();
+  editingCover = new File([data], editingData.value.cover.split("/").slice(-1)[0], {
+        type: data.type
+      })
+  }
+  console.log(pictures.value)
+}
+const form = useForm({
+    validationSchema: schema,
+    initialValues: editingData.value ? {
+    title: editingData.value.title,
+    description: editingData.value.description,
+    price: editingData.value.price,
+    cover: editingCover,
+    pictures: pictures.value.map( (v) => v.file),
+    categories: editingData.value.categories,
+    event_id: editingData.value.event_id,
+    files: editingData.value.files
+  } : undefined
+});
+
+form.setFieldValue("user_id", String(route.params.userid));
+
+const selectedEventName = computed(() => {
+    const eventId = form.values.event_id;
+    if (!eventId) return null;
+
+    const event = events.value.find((e) => {
+        return e.id === eventId;
+    });
+
+    return event ? event.name : null;
+});
+
+watch(
+    () => form.values.files,
+    (files) => {
+        if (!files || files.length === 0) {
+            fileItems.value = [{ file: null, type: "", name: "" }];
+        }
+    },
+    { deep: true },
+);
 
 const handlePicturesChange = (
     event: Event,

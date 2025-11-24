@@ -12,8 +12,17 @@ export default defineEventHandler(async (event) => {
     headers: event.headers
   })
 
-  
-  await isTheUserOwner(db, userid!, session, 'nickname')
+  const isAdmin = await auth().api.userHasPermission({
+    body: {
+        userId: session.user.id,
+        role: 'admin',
+        permission: { "users": ["create", "update"] }
+    },
+});
+
+if (!isAdmin){
+  await isTheUserOwner(db,userid!,session,'nickname');
+  }
   
   const existingGame = await db.query.games.findFirst({
     where: and(eq(tables.games.title, gameid!), eq(tables.games.user_id, user_data.id))

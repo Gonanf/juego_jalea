@@ -97,13 +97,13 @@ const sidebar_items = {
 <template>
   <div class="w-screen h-screen">
     <NuxtRouteAnnouncer />
-    <Toaster />
     <SidebarProvider>
       <SmartSidebar :items="sidebar_items"></SmartSidebar>
 
       <SidebarInset>
         <Heading></Heading>
         <NuxtPage></NuxtPage>
+        <Toaster />
       </SidebarInset>
 
     </SidebarProvider>
