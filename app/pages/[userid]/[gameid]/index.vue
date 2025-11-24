@@ -44,10 +44,9 @@
 
             <UiSeparator />
             <!-- PRECIO -->
-            <FormField v-slot="{ componentField }" name="price" class="hidden">
+            <FormField v-slot="{ componentField }" name="price">
                 <FormItem class="hidden">
                     <FormLabel class="text-base font-medium mb-2 h-fit">Precio</FormLabel>
-                    <FormDescription>(Deshabilitado, Luego se integrara compras)</FormDescription>
                     <FormControl>
                         <UiInput type="number" v-bind="componentField" disabled default-value="0" />
                     </FormControl>
