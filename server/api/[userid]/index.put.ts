@@ -7,8 +7,17 @@ export default defineEventHandler(async (event) => {
     headers: event.headers,
   })
 
+const isAdmin = await auth().api.userHasPermission({
+    body: {
+        userId: session.user.id,
+        role: 'admin',
+        permission: { "users": ["create", "update"] }
+    },
+});
+
+if (!isAdmin){
   await isTheUserOwner(db,userid!,session,'id');
-  
+  }
   const schema = z.object({
     nickname: z.string().min(1).max(25)
   })

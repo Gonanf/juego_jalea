@@ -57,7 +57,7 @@ export async function postGame(
   } = parsed;
   if (cover)
     await hubBlob().put(
-      `${session.user.id}/${parsed.title}/pictures/${cover.name}`,
+      `${session.user.nickname}/${parsed.title}/pictures/${cover.name}`,
       cover,
     );
 

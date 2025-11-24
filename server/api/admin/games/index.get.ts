@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 const isAdmin = await auth().api.userHasPermission({
     body: {
         userId: session.user.id,
-        role: session.user.role,
+        role: 'admin',
         permission: { "events": ["create", "update"] }
     },
 });

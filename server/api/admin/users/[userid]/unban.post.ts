@@ -1,6 +1,5 @@
-
-
 export default defineEventHandler(async (event) => {
+  const userid = getRouterParam(event, 'userid')
   const db = useDrizzle()
   const session = await auth().api.getSession({
     headers: event.headers
@@ -22,6 +21,7 @@ const isAdmin = await auth().api.userHasPermission({
     },
 });
 
+
   
   if (!isAdmin) {
     throw createError({
@@ -30,7 +30,20 @@ const isAdmin = await auth().api.userHasPermission({
     })
   }
   
-  const result = await db.query.events.findMany()
+  const user = await getUserData(db, userid!, 'id')
   
+  if (!user) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'User not found'
+    })
+  }
+
+  const result = await auth().api.unbanUser({
+    body: {
+        userId: user.id,
+    },
+    headers: event.headers,
+});
   return result
 })
